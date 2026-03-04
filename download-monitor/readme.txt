@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 6.9
-Stable tag: 5.1.8
+Stable tag: 5.1.9
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,9 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.1.9 - 04.03.2026 =
+Fixed: Security update
+
 = 5.1.8 - 26.02.2026 =
 Fixed: Security - PayPal payment gateway IDOR and financial logic vulnerability. Validates order hash (timing-safe), binds PayPal token to the order, and only completes the order when the transaction matches. Handles capture failures safely.
 

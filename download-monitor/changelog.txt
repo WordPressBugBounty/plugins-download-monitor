@@ -1,3 +1,9 @@
+= 5.1.9 - 04.03.2026 =
+Fixed: Security update
+
+= 5.1.8 - 26.02.2026 =
+Fixed: Security - PayPal payment gateway IDOR and financial logic vulnerability. Validates order hash (timing-safe), binds PayPal token to the order, and only completes the order when the transaction matches. Handles capture failures safely.
+
 = 5.1.7 - 27.01.2026 =
 Update: Removed unused images.
 Fixed: Textdomain for some translations.
