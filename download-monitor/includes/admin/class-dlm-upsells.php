@@ -25,8 +25,6 @@ class DLM_Upsells {
 
 	private $upsell_tabs = array();
 
-	private $offer = array();
-
 	/**
 	 * Holds the active license status.
 	 *
@@ -82,45 +80,11 @@ class DLM_Upsells {
 	}
 
 	public function upsells_init() {
-		$this->set_offer();
-
 		$this->set_hooks();
 
 		$this->set_tabs();
 
 		$this->set_upsell_actions();
-	}
-
-	private function set_offer() {
-		$this->offer = array(
-			'class'  => '',
-			'column' => '',
-			'label'  => __( 'Get Premium', 'download-monitor' ),
-		);
-
-		$timezone_string = get_option( 'timezone_string' );
-		$timezone        = $timezone_string ? new DateTimeZone( $timezone_string ) : new DateTimeZone( 'UTC' );
-
-		$now = new DateTime( 'now', $timezone );
-
-		$bf_start = new DateTime( '2025-11-03 00:00:00', $timezone );
-		$bf_end   = new DateTime( '2025-12-03 10:00:00', $timezone );
-
-		if ( $now >= $bf_start && $now <= $bf_end ) {
-			$this->offer = array(
-				'class'       => 'wpchill-bf-upsell',
-				'column'      => 'bf-upsell-columns',
-				'label'       => __( '65% OFF for Black Friday', 'download-monitor' ),
-				'description' => __( '65% OFF on new purchases, early renewals or upgrades.', 'download-monitor' ),
-			);
-		}
-		// if ( 12 == $month ) {
-		//  $this->offer = array(
-		//      'class'  => 'wpchill-xmas-upsell',
-		//      'column' => 'xmas-upsell-columns',
-		//      'label'  => __( '25% OFF for Christmas', 'download-monitor' ),
-		//  );
-		// }
 	}
 
 	/**
@@ -172,7 +136,7 @@ class DLM_Upsells {
 	 */
 	public function generate_upsell_box( $title, $description, $tab, $extension, $features = array(), $utm_source = null, $icon = false ) {
 
-		echo '<div class="wpchill-upsell ' . esc_attr( $this->offer['class'] ) . '">';
+		echo '<div class="wpchill-upsell">';
 		if ( $icon ) {
 			echo '<img src="' . esc_url( DLM_URL . 'assets/images/upsells/' . $icon ) . '">';
 		}
@@ -204,9 +168,13 @@ class DLM_Upsells {
 		}
 
 		echo '<a target="_blank" href="https://www.download-monitor.com/pricing/?utm_source=' . ( ! empty( $extension ) ? esc_html( $extension ) . '_metabox' : '' ) . '&utm_medium=lite-vs-pro&utm_campaign=' . ( ! empty( $extension ) ? esc_html( str_replace( ' ', '_', $extension ) ) : '' ) . '"><div class="dlm-available-with-pro"><span class="dashicons dashicons-lock"></span><span>' . esc_html__( 'AVAILABLE WITH PREMIUM', 'download-monitor' ) . '</span></div></a>';
+		$buttons  = '<a target="_blank" href="https://download-monitor.com/free-vs-pro/?utm_source=dlm-lite&utm_medium=link&utm_campaign=upsell&utm_term=lite-vs-pro" class="button">' . esc_html__( 'Free vs Premium', 'download-monitor' ) . '</a>';
+		$buttons .= '<a target="_blank" href="https://www.download-monitor.com/pricing/?utm_source=' . ( ! empty( $extension ) ? esc_html( $extension ) . '_metabox' : '' ) . '&utm_medium=lite-vs-pro&utm_campaign=' . ( ! empty( $extension ) ? esc_html( str_replace( ' ', '_', $extension ) ) : '' ) . '" class="button-primary button">' . esc_html__( 'Get Premium', 'download-monitor' ) . '</a>';
+
+		$buttons = apply_filters( 'dlm_upsell_buttons', $buttons, $extension );
+
 		echo '<div class="wpchill-upsell-buttons-wrap">';
-		echo '<a target="_blank" href="https://download-monitor.com/free-vs-pro/?utm_source=dlm-lite&utm_medium=link&utm_campaign=upsell&utm_term=lite-vs-pro" class="button">' . esc_html__( 'Free vs Premium', 'download-monitor' ) . '</a> ';
-		echo '<a target="_blank" href="https://www.download-monitor.com/pricing/?utm_source=' . ( ! empty( $extension ) ? esc_html( $extension ) . '_metabox' : '' ) . '&utm_medium=lite-vs-pro&utm_campaign=' . ( ! empty( $extension ) ? esc_html( str_replace( ' ', '_', $extension ) ) : '' ) . '" class="button-primary button">' . esc_html( $this->offer['label'] ) . '</a>';
+		echo $buttons; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Filtered HTML, escaped in the default output above.
 		echo '</div>';
 		echo '</div>';
 	}
@@ -788,7 +756,7 @@ class DLM_Upsells {
 	 * @since 4.4.5
 	 */
 	public function output_external_hosting_upsell() {
-		echo '<div class="upsells-columns ' . esc_attr( $this->offer['column'] ) . '">';
+		echo '<div class="upsells-columns">';
 
 		if ( ! $this->check_extension( 'dlm-amazon-s3' ) ) {
 			echo '<div class="upsells-column"><span class="dashicons dashicons-amazon"></span>';

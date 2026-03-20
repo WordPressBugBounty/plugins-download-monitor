@@ -1,3 +1,7 @@
+= 5.1.11 - 20.03.2026 =
+Fixed: Security update.
+Fixed: WPML double language prefix in download URL.
+
 = 5.1.10 - 05.03.2026 =
 Fixed: Security update.
 
