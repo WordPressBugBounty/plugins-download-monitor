@@ -94,8 +94,6 @@ class DLM_Upsells {
 	 */
 	public function set_hooks() {
 
-		add_action( 'dlm_tab_upsell_content_general', array( $this, 'general_tab_upsell' ), 15 );
-
 		add_action( 'dlm_tab_upsell_content_access', array( $this, 'access_tab_upsell' ), 15 );
 
 		add_action( 'dlm_tab_upsell_content_logging', array( $this, 'logging_tab_upsell' ), 15 );
@@ -115,6 +113,8 @@ class DLM_Upsells {
 		add_action( 'dlm_reports_page_end', array( $this, 'insights_upsell' ), 99 );
 
 		add_action( 'dlm_tab_upsell_content_pages', array( $this, 'pages_tab_upsell' ), 15 );
+
+		add_action( 'dlm_tab_section_content_access', array( $this, 'pro_blacklist_upsell' ), 15 );
 	}
 
 
@@ -412,27 +412,6 @@ class DLM_Upsells {
 	}
 
 	/**
-	 * Settings General tab upsell
-	 *
-	 *
-	 * @since 4.4.5
-	 */
-	public function general_tab_upsell() {
-
-		if ( ! $this->check_extension( 'dlm-email-notification' ) ) {
-			$this->generate_upsell_box(
-				__( 'Email notifications', 'download-monitor' ),
-				__( 'Create an email alert to be notified each time one of your files has been downloaded.', 'download-monitor' ),
-				'general',
-				'email-notification',
-				false,
-				false,
-				'email_notification.png'
-			);
-		}
-	}
-
-	/**
 	 * Settings Access tab upsell
 	 *
 	 *
@@ -701,32 +680,6 @@ class DLM_Upsells {
 				__( 'With this extension, you can integrate your files from Google Drive into Download Monitor.', 'download-monitor' ),
 				'google_drive',
 				'google-drive'
-			);
-		}
-	}
-
-
-	/**
-	 * Upsell for Page Addon setting tab
-	 *
-	 * @since 4.4.5
-	 */
-	public function upsell_tab_content_advanced() {
-		if ( ! $this->check_extension( 'dlm-page-addon' ) ) {
-			$this->generate_upsell_box(
-				__( 'Document Library Manager (Page Addon) extension', 'download-monitor' ),
-				__( 'Easily show off your downloads in a clean table or a stylish grid. This add-on gives you a simple, modern tool to organize your files and help your visitors find exactly what they need — fast.', 'download-monitor' ),
-				'page_addon',
-				'page-addon'
-			);
-		}
-
-		if ( ! $this->check_extension( 'dlm-downloading-page' ) ) {
-			$this->generate_upsell_box(
-				__( 'Downloading page extension', 'download-monitor' ),
-				__( 'The Downloading Page extension for Download Monitor forces your downloads to be served from a separate page.', 'download-monitor' ),
-				'downloading_page',
-				'downloading-page'
 			);
 		}
 	}
@@ -1112,5 +1065,23 @@ class DLM_Upsells {
 			array(),
 			$upsells_enqueue['version']
 		);
+	}
+
+	/**
+	 * Upsell for DLM Pro Remote bad bots blacklist & IP banlist.
+	 *
+	 * @since 5.0.13
+	 */
+	public function pro_blacklist_upsell() {
+		if ( ! $this->check_extension( 'dlm-pro' ) ) {
+			echo '<div class="wpchill-upsells-wrapper">';
+			$this->generate_upsell_box(
+				__( 'Blacklist protection', 'download-monitor' ),
+				__( 'Once enabled, known bots will no longer be able to trigger downloads for your files (GoogleBot, BingBot…). The blocklist updates automatically every week, so you don\'t need to do anything. You can also block specific IP addresses if needed.', 'download-monitor' ),
+				'dlm_pro',
+				'dlm_pro'
+			);
+			echo '</div>';
+		}
 	}
 }
