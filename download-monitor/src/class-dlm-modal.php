@@ -223,6 +223,9 @@ class DLM_Modal {
 		$template_handler = new DLM_Template_Handler();
 		// Print scripts, dependencies and inline scripts in an object, so we can attach it to the modal.
 		ob_start();
+		// wp_enqueue_scripts does not fire in AJAX context. Register and enqueue dlm-frontend here
+		// so the modal overlay styles are always present in wp_print_styles() output.
+		wp_enqueue_style( 'dlm-frontend', download_monitor()->get_plugin_url() . '/assets/css/frontend-tailwind.min.css', array(), DLM_VERSION );
 		// print_emoji_styles is deprecated and triggers a PHP warning
 		remove_action( 'wp_print_styles', 'print_emoji_styles' );
 		wp_print_styles();

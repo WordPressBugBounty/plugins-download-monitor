@@ -62,13 +62,13 @@ class DLM_Download_Error_Handler {
 			http_response_code( 404 );
 			exit;
 		}
-		header( 'Status: 404 NoFilePaths, No file paths defined.' );
 		wp_die( esc_html__( 'No file paths defined.',
 		                    'download-monitor' ) . ' <a href="'
 		        . esc_url( home_url() ) . '">'
 		        . esc_html__( 'Go to homepage &rarr;',
 		                      'download-monitor' ) . '</a>',
-		        esc_html__( 'Download Error', 'download-monitor' ) );
+		        esc_html__( 'Download Error', 'download-monitor' ),
+		        array( 'response' => 404 ) );
 	}
 
 	/**
@@ -90,14 +90,13 @@ class DLM_Download_Error_Handler {
 			exit;
 		}
 
-		header( 'Status: 404' . esc_html__( 'No file paths defined.',
-		                                    'download-monitor' ) );
 		wp_die( esc_html__( 'No file paths defined.',
 		                    'download-monitor' ) . ' <a href="'
 		        . esc_url( home_url() ) . '">'
 		        . esc_html__( 'Go to homepage &rarr;',
 		                      'download-monitor' ) . '</a>',
-		        esc_html__( 'Download Error', 'download-monitor' ) );
+		        esc_html__( 'Download Error', 'download-monitor' ),
+		        array( 'response' => 404 ) );
 	}
 
 	/**
@@ -199,13 +198,13 @@ class DLM_Download_Error_Handler {
 			http_response_code( 403 );
 			exit;
 		}
-		header( 'Status: 403 Access denied, file not in allowed paths.' );
 		wp_die( esc_html__( 'Access denied to this file',
 		                    'download-monitor' ) . ' <a href="'
 		        . esc_url( home_url() ) . '">'
 		        . esc_html__( 'Go to homepage &rarr;',
 		                      'download-monitor' ) . '</a>',
-		        esc_html__( 'Download Error', 'download-monitor' ) );
+		        esc_html__( 'Download Error', 'download-monitor' ),
+		        array( 'response' => 403 ) );
 	}
 
 	/**

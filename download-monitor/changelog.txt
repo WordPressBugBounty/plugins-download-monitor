@@ -1,3 +1,8 @@
+= 5.1.14 - 07.05.2026 =
+Fixed: Polylang includes language prefix and any subdirectory.
+Fixed: Error handler returns HTTP 500 instead of 404/403.
+Fixed: No-access modal missing CSS when dlm-frontend was not pre-loaded on the page
+
 = 5.1.13 - 14.04.2026 =
 Fixed: Admin styles compatibility with WordPress 7.0.
 
