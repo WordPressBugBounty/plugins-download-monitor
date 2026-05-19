@@ -515,24 +515,27 @@ if ( ! class_exists( 'DLM_Settings_Page' ) ) {
 		 * @since 4.5.5
 		 */
 		private function regenerate_protection() {
-			$upload_dir = wp_upload_dir();
+			$upload_dir      = wp_upload_dir();
+			$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
+			$is_iis          = stristr( $server_software, 'Microsoft-IIS' ) !== false;
+			$protection_file = $is_iis ? 'web.config' : '.htaccess';
 
-			$htaccess_path = $upload_dir['basedir'] . '/dlm_uploads/.htaccess';
-			$index_path    = $upload_dir['basedir'] . '/dlm_uploads/index.html';
+			$protection_path = $upload_dir['basedir'] . '/dlm_uploads/' . $protection_file;
+			$index_path      = $upload_dir['basedir'] . '/dlm_uploads/index.html';
 
-			//remove old htaccess and index files
-			if ( file_exists( $htaccess_path ) ) {
-				unlink( $htaccess_path );
+			//remove old protection and index files
+			if ( file_exists( $protection_path ) ) {
+				unlink( $protection_path );
 			}
 			if ( file_exists( $index_path ) ) {
 				unlink( $index_path );
 			}
 
-			//generate new htaccess and index files
+			//generate new protection and index files
 			$this->directory_protection();
 
 			//check if the files were created.
-			if ( file_exists( $htaccess_path ) && file_exists( $index_path ) ) {
+			if ( file_exists( $protection_path ) && file_exists( $index_path ) ) {
 				return true;
 			}
 
@@ -553,28 +556,45 @@ if ( ! class_exists( 'DLM_Settings_Page' ) ) {
 				return $settings;
 			}
 
-			$upload_dir    = wp_upload_dir();
-			$htaccess_path = $upload_dir['basedir'] . '/dlm_uploads/.htaccess';
-			$icon          = 'dashicons-dismiss';
-			$icon_color    = '#f00';
-			$icon_text     = __( 'Htaccess is missing.', 'download-monitor' );
+			$upload_dir      = wp_upload_dir();
+			$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
+			$is_iis          = stristr( $server_software, 'Microsoft-IIS' ) !== false;
+			$is_nginx        = stristr( $server_software, 'nginx' ) !== false;
 
-			if ( file_exists( $htaccess_path ) ) {
-				$icon       = 'dashicons-yes-alt';
-				$icon_color = '#00A32A';
-				$icon_text  = __( 'You are protected by htaccess.', 'download-monitor' );
-			}
+			if ( $is_iis ) {
+				$protection_path = $upload_dir['basedir'] . '/dlm_uploads/web.config';
+				$icon            = 'dashicons-dismiss';
+				$icon_color      = '#f00';
+				$icon_text       = __( 'Web.config is missing.', 'download-monitor' );
 
-			if ( stristr( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ), 'nginx' ) !== false ) {
-				$upload_path = str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', $upload_dir['basedir'] );
-				$nginx_rules = "<code class='dlm-code-nginx-rules'>location " . $upload_path . "/dlm_uploads {<br />deny all;<br />return 403;<br />}</code>";
+				if ( file_exists( $protection_path ) ) {
+					$icon       = 'dashicons-yes-alt';
+					$icon_color = '#00A32A';
+					$icon_text  = __( 'You are protected by web.config.', 'download-monitor' );
+				}
+			} else {
+				$htaccess_path = $upload_dir['basedir'] . '/dlm_uploads/.htaccess';
+				$icon          = 'dashicons-dismiss';
+				$icon_color    = '#f00';
+				$icon_text     = __( 'Htaccess is missing.', 'download-monitor' );
 
-				$nginx_text = sprintf( __( 'Please add the following rules to your nginx config to disable direct file access: %s', 'download-monitor' ), wp_kses_post( $nginx_rules ) );
+				if ( file_exists( $htaccess_path ) ) {
+					$icon       = 'dashicons-yes-alt';
+					$icon_color = '#00A32A';
+					$icon_text  = __( 'You are protected by htaccess.', 'download-monitor' );
+				}
 
-				$icon       = 'dashicons-dismiss';
-				$icon_color = '#f00';
-				$icon_text  = sprintf( __( 'Because your server is running on nginx, our .htaccess file can\'t protect your downloads. %s', 'download-monitor' ), $nginx_text );
-				$disabled   = true;
+				if ( $is_nginx ) {
+					$upload_path = str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', $upload_dir['basedir'] );
+					$nginx_rules = "<code class='dlm-code-nginx-rules'>location " . $upload_path . "/dlm_uploads {<br />deny all;<br />return 403;<br />}</code>";
+
+					$nginx_text = sprintf( __( 'Please add the following rules to your nginx config to disable direct file access: %s', 'download-monitor' ), wp_kses_post( $nginx_rules ) );
+
+					$icon       = 'dashicons-dismiss';
+					$icon_color = '#f00';
+					$icon_text  = sprintf( __( 'Because your server is running on nginx, our .htaccess file can\'t protect your downloads. %s', 'download-monitor' ), $nginx_text );
+					$disabled   = true;
+				}
 			}
 
 			if ( ! isset( $settings['general']['sections']['misc']['title'] ) ) {
@@ -607,9 +627,43 @@ if ( ! class_exists( 'DLM_Settings_Page' ) ) {
 		 */
 		private function directory_protection() {
 			// Install files and folders for uploading files and prevent hotlinking
-			$upload_dir = wp_upload_dir();
+			$upload_dir      = wp_upload_dir();
+			$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
+			$is_iis          = stristr( $server_software, 'Microsoft-IIS' ) !== false;
 
-			$htaccess_content = "# Apache 2.4 and up
+			if ( $is_iis ) {
+				$webconfig_content = '<?xml version="1.0" encoding="UTF-8"?>' . "\n" .
+				                     '<configuration>' . "\n" .
+				                     '    <system.web>' . "\n" .
+				                     '        <authorization>' . "\n" .
+				                     '            <deny users="*" />' . "\n" .
+				                     '        </authorization>' . "\n" .
+				                     '    </system.web>' . "\n" .
+				                     '    <system.webServer>' . "\n" .
+				                     '        <security>' . "\n" .
+				                     '            <requestFiltering>' . "\n" .
+				                     '                <denyUrlSequences>' . "\n" .
+				                     '                    <add sequence="dlm_uploads" />' . "\n" .
+				                     '                </denyUrlSequences>' . "\n" .
+				                     '            </requestFiltering>' . "\n" .
+				                     '        </security>' . "\n" .
+				                     '    </system.webServer>' . "\n" .
+				                     '</configuration>';
+
+				$files = array(
+					array(
+						'base'    => $upload_dir['basedir'] . '/dlm_uploads',
+						'file'    => 'web.config',
+						'content' => $webconfig_content,
+					),
+					array(
+						'base'    => $upload_dir['basedir'] . '/dlm_uploads',
+						'file'    => 'index.html',
+						'content' => '',
+					),
+				);
+			} else {
+				$htaccess_content = "# Apache 2.4 and up
 	<IfModule mod_authz_core.c>
 	Require all denied
 	</IfModule>
@@ -620,18 +674,19 @@ if ( ! class_exists( 'DLM_Settings_Page' ) ) {
 	Deny from all
 	</IfModule>";
 
-			$files = array(
-				array(
-					'base'    => $upload_dir['basedir'] . '/dlm_uploads',
-					'file'    => '.htaccess',
-					'content' => $htaccess_content,
-				),
-				array(
-					'base'    => $upload_dir['basedir'] . '/dlm_uploads',
-					'file'    => 'index.html',
-					'content' => '',
-				),
-			);
+				$files = array(
+					array(
+						'base'    => $upload_dir['basedir'] . '/dlm_uploads',
+						'file'    => '.htaccess',
+						'content' => $htaccess_content,
+					),
+					array(
+						'base'    => $upload_dir['basedir'] . '/dlm_uploads',
+						'file'    => 'index.html',
+						'content' => '',
+					),
+				);
+			}
 
 			foreach ( $files as $file ) {
 				if ( wp_mkdir_p( $file['base'] ) && ! file_exists( trailingslashit( $file['base'] ) . $file['file'] ) ) {

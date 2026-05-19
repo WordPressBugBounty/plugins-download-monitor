@@ -1,3 +1,8 @@
+= 5.1.15 - 19.05.2026 =
+Fixed: Compatibility with Divi builder. No longer loading XHR javascript in builder.
+Added: Windows Server (IIS) support for dlm_uploads directory protection via web.config using requestFiltering.
+Fixed: session_start() failure when server session directory is missing, with graceful fallback to sys_get_temp_dir().
+
 = 5.1.14 - 07.05.2026 =
 Fixed: Polylang includes language prefix and any subdirectory.
 Fixed: Error handler returns HTTP 500 instead of 404/403.

@@ -471,6 +471,13 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 					'samesite' => 'Lax',
 				);
 				session_set_cookie_params( apply_filters( 'dlm_set_session_params', $params ) );
+				$dlm_session_path = session_save_path();
+				if ( false !== strpos( $dlm_session_path, ';' ) ) {
+					$dlm_session_path = substr( $dlm_session_path, strrpos( $dlm_session_path, ';' ) + 1 );
+				}
+				if ( ! empty( $dlm_session_path ) && ( ! is_dir( $dlm_session_path ) || ! is_writable( $dlm_session_path ) ) ) {
+					session_save_path( sys_get_temp_dir() );
+				}
 				session_start();
 			}
 

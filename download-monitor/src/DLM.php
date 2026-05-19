@@ -412,7 +412,8 @@ class WP_DLM {
 		}
 
 		// Leave this filter here in case XHR is problematic and needs to be disabled.
-		if ( self::do_xhr() ) {
+		$is_divi_fb = isset( $_GET['et_fb'] ) || ( function_exists( 'et_fb_is_builder_used_on_current_request' ) && et_fb_is_builder_used_on_current_request() );
+		if ( self::do_xhr() && ! $is_divi_fb ) {
 			wp_register_script(
 				'dlm-xhr',
 				plugins_url( '/assets/js/dlm-xhr' . ( ( ! SCRIPT_DEBUG )
