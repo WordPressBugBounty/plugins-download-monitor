@@ -109,6 +109,25 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			if ( is_admin() || ! empty( $GLOBALS['wp']->query_vars['rest_route'] ) ) {
 				return;
 			}
+
+			// When WPML is active, resolve the translated endpoint for the current language so
+			// query var lookups below match the rewrite endpoint that was actually registered.
+			if ( function_exists( 'icl_get_languages' ) && has_filter( 'wpml_translate_single_string' ) ) {
+				$current_lang = apply_filters( 'wpml_current_language', null );
+				if ( $current_lang ) {
+					$translated_endpoint = apply_filters(
+						'wpml_translate_single_string',
+						$this->endpoint,
+						'admin_texts_dlm_download_endpoint',
+						'dlm_download_endpoint',
+						$current_lang
+					);
+					if ( ! empty( $translated_endpoint ) ) {
+						$this->endpoint = $translated_endpoint;
+					}
+				}
+			}
+
 			// check HTTP method.
 			$request_method = ( ! empty( $_SERVER['REQUEST_METHOD'] )
 				? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) )

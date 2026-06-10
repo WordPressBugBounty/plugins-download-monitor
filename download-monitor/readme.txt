@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 7.0
-Stable tag: 5.1.15
+Stable tag: 5.1.16
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,16 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.1.16 - 10.06.2026 =
+Removed: Short Description meta box from download edit page.
+Removed: ID field from Download Information meta box.
+Removed: Manual download count and File Date fields from version editor.
+Added: Title validation — publishing a download without a title now shows an error notice and keeps the download as draft.
+Fixed: Debug Download meta box is now hidden by default, togglable via Screen Options.
+Fixed: Version date is preserved on save instead of being overwritten.
+Fixed: Button styles and radio button selection color in Insert Download popup.
+Fixed: WPML translated endpoint resolution for current language in download handler.
+
 = 5.1.15 - 19.05.2026 =
 Fixed: Compatibility with Divi builder. No longer loading XHR javascript in builder.
 Added: Windows Server (IIS) support for dlm_uploads directory protection via web.config using requestFiltering.
