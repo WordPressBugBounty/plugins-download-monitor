@@ -144,7 +144,7 @@ class DLM_Template_Handler {
 		$default_attributes = array(
 			'link_attributes' => array(
 				'data-e-Disable-Page-Transition' => 'true',
-				'class'                          => array( 'download-link' ),
+				'class'                          => array( 'dlm-download-link' ),
 				'title'                          => $title,
 				'href'                           => $download->get_the_download_link(),
 				'rel'                            => 'nofollow',

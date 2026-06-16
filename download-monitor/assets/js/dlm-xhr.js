@@ -409,7 +409,7 @@ class DLM_XHR_Download {
 				let $class = 'dlm-download-started';
 				buttonObj.find( 'span.dlm-xhr-progress' ).remove();
 				// Comment below lines for the new XHR loader so that we know where to rever
-				$class = $class + ' download-' + Math.ceil( percent_complete / 10 ) * 10;
+				$class = $class + ' dlm-download-' + Math.ceil( percent_complete / 10 ) * 10;
 
 				if ( Infinity != percent_complete ) {
 					buttonObj.append( '<span class="dlm-xhr-progress">&nbsp;' + percent_complete + '%</span>' );
@@ -682,7 +682,7 @@ class DLM_XHR_Download {
 				let $class = 'dlm-download-started';
 				buttonObj.find( 'span.dlm-xhr-progress' ).remove();
 				// Comment below lines for the new XHR loader so that we know where to rever
-				$class = $class + ' download-' + Math.ceil( percent_complete / 10 ) * 10;
+				$class = $class + ' dlm-download-' + Math.ceil( percent_complete / 10 ) * 10;
 
 				if ( Infinity != percent_complete ) {
 					buttonObj.append( '<span class="dlm-xhr-progress">&nbsp;' + percent_complete + '%</span>' );

@@ -143,6 +143,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 							value="<?php echo esc_attr( $file_version ); ?>"/>
 				</div>
 
+				<?php if ( apply_filters( 'dlm_show_version_extra_fields', false ) ) : ?>
+				<div>
+					<label><?php echo esc_html__( 'Manual download count', 'download-monitor' ); ?>:</label>
+					<div class="wpchill-tooltip"><i>[?]</i>
+						<div class="wpchill-tooltip-content"><?php esc_html_e( 'Taken into consideration for the total download count ( total = Download Monitor custom table count + manual download count ).', 'download-monitor' ); ?></div>
+					</div>
+					<input type="text" class="short"
+							name="downloadable_file_download_count[<?php echo esc_attr( $version_increment ); ?>]"
+							placeholder="<?php echo ( isset( $meta_download_count ) ) ? esc_attr( $meta_download_count ) : '0'; ?>"/>
+				</div>
+				<?php if ( ! empty( $file_post_date->format( 'Y-m-d' ) ) ) : ?>
+				<div class="dlm-file-version__date">
+					<label><?php echo esc_html__( 'File Date', 'download-monitor' ); ?>:</label>
+					<input type="text" class="date-picker-field"
+							name="downloadable_file_date[<?php echo esc_attr( $version_increment ); ?>]"
+							maxlength="10"
+							value="<?php echo esc_attr( $file_post_date->format( 'Y-m-d' ) ); ?>"/> @
+					<input type="text" class="hour" placeholder="<?php echo esc_html__( 'h', 'download-monitor' ); ?>"
+							name="downloadable_file_date_hour[<?php echo esc_attr( $version_increment ); ?>]"
+							maxlength="2" size="2"
+							value="<?php echo esc_attr( $file_post_date->format( 'H' ) ); ?>"/>:
+					<input type="text" class="minute"
+							placeholder="<?php echo esc_attr__( 'm', 'download-monitor' ); ?>"
+							name="downloadable_file_date_minute[<?php echo esc_attr( $version_increment ); ?>]"
+							maxlength="2" size="2"
+							value="<?php echo esc_attr( $file_post_date->format( 'i' ) ); ?>"/>
+				</div>
+				<?php endif; ?>
+				<?php endif; ?>
+
 				<?php
 				// get available hashes
 				$hashes = download_monitor()->service( 'hasher' )->get_available_hashes();

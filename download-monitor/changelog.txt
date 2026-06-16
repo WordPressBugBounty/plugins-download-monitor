@@ -1,3 +1,7 @@
+= 5.2.0 - 15.06.2026 =
+Dev: Improved frontend CSS class naming to avoid conflicts with other plugins.
+Added: Filter to show extra version fields in the download editor.
+
 = 5.1.16 - 10.06.2026 =
 Removed: Short Description meta box from download edit page.
 Removed: ID field from Download Information meta box.

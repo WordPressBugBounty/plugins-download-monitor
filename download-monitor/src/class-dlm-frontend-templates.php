@@ -69,14 +69,14 @@ class DLM_Frontend_Templates {
 	public function add_template_attributes( $attributes, $download, $template ) {
 		switch ( $template ) {
 			case 'box':
-				$attributes['link_attributes']['class'][] = 'download-button';
+				$attributes['link_attributes']['class'][] = 'dlm-download-button';
 				break;
 			case 'button':
-				$attributes['link_attributes']['class'][] = 'download-button';
+				$attributes['link_attributes']['class'][] = 'dlm-download-button';
 				$attributes['link_attributes']['class'][] = 'aligncenter';
 				break;
 			case 'filename':
-				$attributes['link_attributes']['class'][] = 'filetype-icon filetype-' . esc_attr( $download->get_version()->get_filetype() );
+				$attributes['link_attributes']['class'][] = 'dlm-filetype-icon dlm-filetype-' . esc_attr( $download->get_version()->get_filetype() );
 				break;
 			case 'no-version':
 				$attributes['link_attributes']['title']  = esc_html__( 'Please set a version in your WordPress admin', 'download-monitor' );

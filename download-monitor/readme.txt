@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 7.0
-Stable tag: 5.1.16
+Stable tag: 5.2.0
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,11 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.2.0 - 15.06.2026 =
+Changed: Improved frontend CSS class naming to avoid conflicts with other plugins.
+Added: Filter to show extra version fields in the download editor.
+Fixed: PHP warning related to session handling on hosts with open_basedir restrictions.
+
 = 5.1.16 - 10.06.2026 =
 Removed: Short Description meta box from download edit page.
 Removed: ID field from Download Information meta box.

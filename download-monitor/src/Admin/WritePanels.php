@@ -612,7 +612,16 @@ class DLM_Admin_Writepanels {
 			$downloadable_file_menu_order     = $_POST['downloadable_file_menu_order'];
 			$downloadable_file_version        = $_POST['downloadable_file_version'];
 			$downloadable_file_urls           = wp_unslash( $_POST['downloadable_file_urls'] );
-			$downloadable_file_download_count = isset( $_POST['downloadable_file_download_count'] ) ? $_POST['downloadable_file_download_count'] : array();
+			$downloadable_file_download_count = array();
+			$downloadable_file_date           = '';
+			$downloadable_file_date_hour      = array();
+			$downloadable_file_date_minute    = array();
+			if ( apply_filters( 'dlm_show_version_extra_fields', false ) ) {
+				$downloadable_file_download_count = isset( $_POST['downloadable_file_download_count'] ) ? $_POST['downloadable_file_download_count'] : array();
+				$downloadable_file_date           = isset( $_POST['downloadable_file_date'] ) ? $_POST['downloadable_file_date'] : '';
+				$downloadable_file_date_hour      = isset( $_POST['downloadable_file_date_hour'] ) ? $_POST['downloadable_file_date_hour'] : array();
+				$downloadable_file_date_minute    = isset( $_POST['downloadable_file_date_minute'] ) ? $_POST['downloadable_file_date_minute'] : array();
+			}
 
 			// loop
 			for ( $i = 0; $i <= max( array_keys( $downloadable_file_id ) ); $i ++ ) {
@@ -624,8 +633,11 @@ class DLM_Admin_Writepanels {
 				// sanatize post data
 				$file_id             = absint( $downloadable_file_id[ $i ] );
 				$file_menu_order     = absint( $downloadable_file_menu_order[ $i ] );
-				$file_version        = ( sanitize_text_field( $downloadable_file_version[ $i ] ) );
+				$file_version        = sanitize_text_field( $downloadable_file_version[ $i ] );
 				$file_download_count = isset( $downloadable_file_download_count[ $i ] ) ? sanitize_text_field( $downloadable_file_download_count[ $i ] ) : '';
+				$file_date_str       = ! empty( $downloadable_file_date[ $i ] ) ? sanitize_text_field( $downloadable_file_date[ $i ] ) : '';
+				$file_date_hour      = ! empty( $downloadable_file_date_hour[ $i ] ) ? absint( $downloadable_file_date_hour[ $i ] ) : 0;
+				$file_date_minute    = ! empty( $downloadable_file_date_minute[ $i ] ) ? absint( $downloadable_file_date_minute[ $i ] ) : 0;
 				$files               = array_filter( array_map( 'trim', explode( "\n", $downloadable_file_urls[ $i ] ) ) );
 				$secured_files       = array();
 				$file_manager        = new DLM_File_Manager();
@@ -644,13 +656,15 @@ class DLM_Admin_Writepanels {
 					$version->set_author( get_current_user_id() );
 					$version->set_menu_order( $file_menu_order );
 					$version->set_version( $file_version );
-					// Preserve existing date; only set a default if the version has none.
-					if ( ! $version->get_date() ) {
+					// If date came from the form (extra fields enabled), use it; otherwise preserve existing.
+					if ( ! empty( $file_date_str ) ) {
+						$version->set_date( new DateTime( $file_date_str . ' ' . $file_date_hour . ':' . $file_date_minute . ':00' ) );
+					} elseif ( ! $version->get_date() ) {
 						$version->set_date( new DateTime() );
 					}
 					$version->set_mirrors( $files );
 
-					// only set download count if is posted
+					// Only update download count if submitted (extra fields enabled and value entered).
 					if ( '' !== $file_download_count ) {
 						$version->set_meta_download_count( $file_download_count );
 					}
