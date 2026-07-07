@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 7.0
-Stable tag: 5.2.0
+Stable tag: 5.2.1
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,15 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.2.1 - 07.07.2026 =
+Improved: File browser modal updated.
+Fixed: Downloads widget chart on the dashboard showing incorrect data.
+Fixed: Download title sometimes displayed incorrectly on the Reports page.
+Fixed: PHP notice shown on some admin pages about an incorrectly enqueued script.
+Fixed: File download not working correctly on Safari.
+Improved: Download button templates now integrate better with active theme styling.
+Fixed: Various Terms & Conditions issues, including messaging and translation support.
+
 = 5.2.0 - 15.06.2026 =
 Changed: Improved frontend CSS class naming to avoid conflicts with other plugins.
 Added: Filter to show extra version fields in the download editor.

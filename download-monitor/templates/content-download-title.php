@@ -42,12 +42,14 @@ if ( ! empty( $dlm_attributes['className'] ) ) {
  */
 do_action( 'dlm_template_content_before_link', $dlm_download, $attributes, $template );
 ?>
+<div class="wp-block-button">
 <a <?php
 echo
 DLM_Utils::generate_attributes( $attributes['link_attributes'] ) ?> >
 	<?php
 	$dlm_download->the_title(); ?>
 </a>
+</div>
 <?php
 
 /**

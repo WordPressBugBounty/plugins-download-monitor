@@ -58,50 +58,15 @@
 }
 
 .dlm-download-button {
-  text-align: center;
-  text-decoration: none !important;
-  padding: 0.75em 1em;
-  color: #fff;
-  display: block;
-  font-size: 1.2em;
-  line-height: 1.5em;
-  background-color: #0099cc;
-  background-image: -webkit-linear-gradient(#009fd4, #0099cc, #0086b2);
-  background-image: -moz-linear-gradient(#009fd4, #0099cc, #0086b2);
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  border: 1px solid #0086b2;
-  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
 
-  &:hover {
-    color: #fff;
-    background-color: #0099cc;
-    background-image: -webkit-linear-gradient(#0099cc, #0086b2);
-    background-image: -moz-linear-gradient(#0099cc, #0086b2);
-  }
-
-  &:visited {
-    color: #fff;
-    text-decoration: none;
-  }
-
-
-  small {
+  .dlm-button-meta {
     font-size: 0.8em;
     opacity: 0.8;
-    display: block;
   }
 }
 
-.dlm-filetype-icon {
-  padding-left: 19px;
-  background-repeat: no-repeat;
-  background-position: left;
-  background-image: url(../images/filetypes/document.png);
-}
 
 .dlm-filetype-pdf {
   background-image: url(../images/filetypes/document-pdf.png);
@@ -284,21 +249,6 @@ html body a.dlm-download-button{
     text-decoration: none;
   }
 
-  &.dlm-download-complete {
-    &::after {
-      content: '✓';
-      width:20px;
-      right:-30px;
-      position: absolute;
-      height: 100%;
-      z-index:3;
-      background:transparent;
-      color:green;
-      bottom:0;
-      left:auto;
-    }
-  }
-
   &::before {
     content: '';
     position: absolute;
@@ -361,15 +311,7 @@ html body a.dlm-download-button{
 }
 
 a.dlm-download-button {
-  
-  &.dlm-download-complete {
-    &::after {
-    height:auto;
-    top:50%;
-    transform: translateY(-50%);
-    }
-  }
-  
+
   &::before {
     z-index: 0;
   }
@@ -383,41 +325,8 @@ a.dlm-download-button {
 html body .dlm-download-link {
   position: relative;
 
-  &::before, &::after {
-    content: '';
-    position: absolute;
-    right: -40px;
-    border-radius: 5px;
-    display: block;
-    opacity:0;
-    z-index:-1;
-  }
-
   &.dlm-download-started {
     text-decoration: none;
-
-    &::before, &::after {
-      opacity:1;
-      z-index:99;
-    }
-  }
-
-  &.dlm-download-complete {
-    &::after {
-      content: '✓';
-      opacity:1;
-      z-index:99;
-      background:transparent;
-      animation:none;
-      transform: translateY(-50%);
-      top:calc( 50% - 5px );
-      line-height: initial;
-    }
-
-    &::before {
-     opacity:0;
-      z-index:-1;
-    }
   }
 }
 @keyframes lds-ellipsis1 {

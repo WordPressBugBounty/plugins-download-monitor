@@ -102,9 +102,6 @@ class WP_DLM {
 			// Admin Write Panels
 			new DLM_Admin_Writepanels();
 
-			// Admin Media Browser
-			new DLM_Admin_Media_Browser();
-
 			// Admin Media Insert
 			new DLM_Admin_Media_Insert();
 

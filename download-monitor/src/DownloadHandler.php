@@ -942,14 +942,14 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			$headers = array();
 			// We use this method to encode the filename so that file names with characters like
 			// chinese or persian can be named correctly after the download in Safari.
-			$file_name = rawurlencode( sanitize_file_name( $file_name ) );
+			$file_name_safe = sanitize_file_name( $file_name );
+			$file_name      = rawurlencode( $file_name_safe );
 			if ( $this->check_for_xhr() ) {
-				$headers['Content-Disposition']
-											= "attachment; filename=\"{$file_name}\";";
+				$headers['Content-Disposition'] = "attachment; filename=\"{$file_name}\";";
 				$headers['X-DLM-File-Name']     = "{$file_name}";
 			} else {
-				$headers['Content-Disposition']
-					= "attachment; filename*=UTF-8''{$file_name};";
+				// Include filename= fallback for Safari which doesn't support filename*=UTF-8'' without it.
+				$headers['Content-Disposition'] = "attachment; filename=\"{$file_name_safe}\"; filename*=UTF-8''{$file_name}";
 			}
 
 			$headers['X-Robots-Tag']              = 'noindex, nofollow';

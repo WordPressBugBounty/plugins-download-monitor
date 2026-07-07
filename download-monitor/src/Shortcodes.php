@@ -744,10 +744,7 @@ if ( ! class_exists( 'DLM_Shortcodes' ) ) {
 						'download'          => $download,
 						'no_access_message' => ( ( $atts['show_message'] )
 							? wp_kses_post(
-								get_option(
-									'dlm_no_access_error',
-									''
-								)
+								apply_filters( 'dlm_no_access_message', get_option( 'dlm_no_access_error', '' ), $download )
 							) : '' ),
 					)
 				);

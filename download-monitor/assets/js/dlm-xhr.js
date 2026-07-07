@@ -489,7 +489,7 @@ class DLM_XHR_Download {
 		}
 
 		if ( isAppleSafari ) {
-			window.location.href( redirect_path );
+			window.location.href = redirect_path;
 			return;
 		}
 

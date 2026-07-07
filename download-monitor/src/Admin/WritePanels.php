@@ -470,6 +470,7 @@ class DLM_Admin_Writepanels {
 			<?php
 			do_action( 'dlm_download_monitor_files_writepanel_end', $this->download_post );
 			?>
+			<div id="dlm-file-browser-root"></div>
 
 		</div>
 		<?php
