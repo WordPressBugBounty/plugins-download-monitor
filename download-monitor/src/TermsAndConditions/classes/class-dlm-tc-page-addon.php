@@ -11,7 +11,6 @@ class DLM_TC_Page_Addon {
 	public function setup() {
 		// Hijack the page addon download button
 		add_filter( 'dlm_page_addon_download_button', array( $this, 'page_addon_download_button' ), 10, 2 );
-		add_filter( 'dlm_shortcode_download_content', array( $this, 'shortcode_download_content' ), 20, 3 );
 	}
 
 	/**
@@ -30,14 +29,6 @@ class DLM_TC_Page_Addon {
 		}
 
 		return $content;
-	}
-
-	public function shortcode_download_content( $content, $download_id, $atts ) {
-		if ( '' !== $content ) {
-			return $content;
-		}
-
-		return $this->get_locked_content( $download_id );
 	}
 
 	private function get_locked_content( $download_id ) {

@@ -40,7 +40,6 @@ if ( ! empty( $dlm_attributes['className'] ) ) {
  */
 do_action( 'dlm_template_content_before_link', $dlm_download, $attributes, $template );
 ?>
-<div class="wp-block-button">
 <a <?php
 echo
 DLM_Utils::generate_attributes( $attributes['link_attributes'] ) // phpcs:ignore WordPress.Security.EscapeOutput ?> >
@@ -50,7 +49,6 @@ DLM_Utils::generate_attributes( $attributes['link_attributes'] ) // phpcs:ignore
 	printf( esc_html( _n( '1 download', '%d downloads', $dlm_download->get_download_count(), 'download-monitor' ) ), esc_html( $dlm_download->get_download_count() ) ) ?>
 	)
 </a>
-</div>
 <?php
 
 /**

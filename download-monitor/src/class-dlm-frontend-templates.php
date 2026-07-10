@@ -77,16 +77,12 @@ class DLM_Frontend_Templates {
 				$attributes['link_attributes']['class'][] = 'wp-element-button';
 				break;
 			case 'filename':
-				$attributes['link_attributes']['class'][] = 'wp-block-button__link';
-				$attributes['link_attributes']['class'][] = 'wp-element-button';
 				break;
 			case 'no-version':
 				$attributes['link_attributes']['title'] = esc_html__( 'Please set a version in your WordPress admin', 'download-monitor' );
 				$attributes['link_attributes']['href'] = '#';
 				break;
 			case 'title':
-				$attributes['link_attributes']['class'][] = 'wp-block-button__link';
-				$attributes['link_attributes']['class'][] = 'wp-element-button';
 				break;
 			case 'version-list':
 				$attributes['link_attributes']['title'] = sprintf( esc_attr( _n( 'Downloaded 1 time', 'Downloaded %d times', $download->get_download_count(), 'download-monitor' ) ), esc_html( $download->get_download_count() ) );
