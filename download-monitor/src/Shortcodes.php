@@ -97,9 +97,6 @@ if ( ! class_exists( 'DLM_Shortcodes' ) ) {
 		 * @return string
 		 */
 		public function download( $atts, $content = '' ) {
-			// enqueue style only on shortcode use
-			wp_enqueue_style( 'dlm-frontend' );
-
 			/**
 			 * Action to allow the adition of extra scripts and code related to the shortcode
 			 *
@@ -355,8 +352,6 @@ if ( ! class_exists( 'DLM_Shortcodes' ) ) {
 			 */
 			do_action( 'dlm_downloads_shortcode_scripts' );
 
-			// enqueue style only on shortcode use
-			wp_enqueue_style( 'dlm-frontend' );
 			extract(
 				shortcode_atts(
 					array(

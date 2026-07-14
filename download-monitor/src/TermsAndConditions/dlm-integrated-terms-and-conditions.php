@@ -70,8 +70,6 @@ class DLM_Integrated_Terms_And_Conditions {
 	 */
 	public function add_to_no_access_page( $download ) {
 		if ( DLM_TC_Access_Manager::is_tc_locked( $download->get_id() ) ) {
-			wp_enqueue_style( 'dlm-frontend' );
-
 			// template handler
 			$template_handler = new DLM_Template_Handler();
 

@@ -1,3 +1,6 @@
+= 5.2.4 - 14.07.2026 =
+Fixed: Frontend CSS is now always loaded on frontend pages.
+
 = 5.2.3 - 14.07.2026 =
 Fixed: Default download template link rendering inside lists.
 
