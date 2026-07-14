@@ -387,7 +387,7 @@ if ( ! class_exists( 'DLM_Shortcodes' ) ) {
 
 						// Output args
 						'template'                  => dlm_get_default_download_template(),
-						'loop_start'                => '<ul class="dlm-downloads">',
+						'loop_start'                => '<ul class="dlm-downloads wp-block-list">',
 						'loop_end'                  => '</ul>',
 						'before'                    => '<li>',
 						'after'                     => '</li>',
@@ -645,7 +645,8 @@ if ( ! class_exists( 'DLM_Shortcodes' ) ) {
 
 			wp_reset_postdata();
 
-			return ob_get_clean();
+			$output = ob_get_clean();
+			return preg_replace( '/(\r?\n){2,}/', "\n", $output );
 		}
 
 		/**

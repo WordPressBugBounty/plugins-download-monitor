@@ -1,3 +1,6 @@
+= 5.2.3 - 14.07.2026 =
+Fixed: Default download template link rendering inside lists.
+
 = 5.2.2 - 10.07.2026 =
 Changed: Title and Filename download templates restored to default link styling.
 Fixed: Terms & Conditions download behavior and admin list quick edit checkbox.
