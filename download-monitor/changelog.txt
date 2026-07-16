@@ -1,3 +1,7 @@
+= 5.2.5 - 16.07.2026 =
+Fixed: Download loading indicator styling.
+Added: The download_data shortcode now supports custom meta fields.
+
 = 5.2.4 - 14.07.2026 =
 Fixed: Frontend CSS is now always loaded on frontend pages.
 

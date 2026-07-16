@@ -128,7 +128,7 @@ class DLM_XHR_Download {
 		button.removeAttribute( 'download' );
 		button.setAttribute( 'disabled', 'disabled' );
 		if ( dlmXHRProgress ) {
-			const loading_gif = '<img src="' + dlmXHRgif + '" class="dlm-xhr-loading-gif" style="display:inline-block; vertical-align: middle; margin-left:15px;">';
+			const loading_gif = '<img src="' + dlmXHRgif + '" class="dlm-xhr-loading-gif">';
 			button.innerHTML += loading_gif;
 		}
 

@@ -373,6 +373,12 @@ html body .dlm-download-link.dlm-download-started {
   font-size: 12px;
   color: red;
 }
+.dlm-xhr-loading-gif {
+  width: 20px;
+  height: 20px;
+  align-self: center;
+  margin: 5px 0;
+}
 .dlm-xhr-progress {
   min-width: 75px;
   width: auto;

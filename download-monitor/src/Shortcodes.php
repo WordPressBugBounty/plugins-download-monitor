@@ -327,6 +327,12 @@ if ( ! class_exists( 'DLM_Shortcodes' ) ) {
 						}
 
 						return $returnstr;
+					default:
+						$meta = get_post_meta( $id, $data, false );
+						if ( empty( $meta ) ) {
+							return '';
+						}
+						return count( $meta ) === 1 ? $meta[0] : implode( ', ', $meta );
 				}
 			} catch ( Exception $e ) {
 				return '[' . __( 'Download not found', 'download-monitor' )
