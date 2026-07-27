@@ -467,6 +467,7 @@ class DLM_XHR_Download {
 			cookie,
 			currentURL,
 			nonce: headers[ 'x-dlm-nonce' ],
+			log_token: headers[ 'x-dlm-log-token' ],
 		} );
 
 		for ( const [ key, value ] of Object.entries( headers ) ) {
