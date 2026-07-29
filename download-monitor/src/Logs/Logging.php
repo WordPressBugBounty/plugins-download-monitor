@@ -206,7 +206,14 @@ class DLM_Logging {
 		if ( ! defined( 'DLM_DOING_XHR' ) ) {
 			define( 'DLM_DOING_XHR', true );
 		}
-		$status      = sanitize_text_field( wp_unslash( $_POST['status'] ) );
+
+		$status           = sanitize_text_field( wp_unslash( $_POST['status'] ) );
+		$allowed_statuses = apply_filters( 'dlm_xhr_log_allowed_statuses', array( 'completed', 'redirected', 'failed' ) );
+
+		if ( ! in_array( $status, $allowed_statuses, true ) ) {
+			wp_send_json_error( 'Invalid status' );
+		}
+
 		$cookie      = 'true' === $_POST['cookie'];
 		$current_url = ( isset( $_POST['currentURL'] ) ) ? esc_url_raw( $_POST['currentURL'] ) : '-';
 		// Set our objects

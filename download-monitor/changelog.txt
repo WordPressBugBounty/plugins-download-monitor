@@ -1,5 +1,8 @@
+= 5.2.7 - 29.07.2026 =
+Fixed: Hardened the XHR download logging endpoint against unauthorized log entries.
+
 = 5.2.6 - 27.07.2026 =
-Fixed: Security update.
+Fixed: Security update. Thanks to Anirudh Gupta.
 
 = 5.2.5 - 16.07.2026 =
 Fixed: Download loading indicator styling.
