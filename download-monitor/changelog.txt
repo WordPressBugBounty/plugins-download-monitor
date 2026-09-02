@@ -1,3 +1,7 @@
+= 5.2.8 - 02.09.2026 =
+Fixed: PayPal checkout could fail without showing an error message.
+Fixed: Shop currency list limited to currencies supported by PayPal.
+
 = 5.2.7 - 29.07.2026 =
 Fixed: Hardened the XHR download logging endpoint against unauthorized log entries.
 

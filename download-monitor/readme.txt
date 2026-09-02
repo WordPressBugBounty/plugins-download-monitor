@@ -2,8 +2,8 @@
 Contributors: wpchill, silkalns, barrykooij, mikejolley  
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
-Tested up to: 7.0
-Stable tag: 5.2.7
+Tested up to: 7.1
+Stable tag: 5.2.8
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,10 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.2.8 - 02.09.2026 =
+Fixed: PayPal checkout could fail without showing an error message.
+Fixed: Shop currency list limited to currencies supported by PayPal.
+
 = 5.2.7 - 29.07.2026 =
 Fixed: Hardened the XHR download logging endpoint against unauthorized log entries.
 
