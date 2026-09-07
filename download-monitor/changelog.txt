@@ -1,3 +1,7 @@
+= 5.2.9 - 07.09.2026 =
+Fixed: Minor translation issue.
+Fixed: Insert Download button not working in some editors.
+
 = 5.2.8 - 02.09.2026 =
 Fixed: PayPal checkout could fail without showing an error message.
 Fixed: Shop currency list limited to currencies supported by PayPal.

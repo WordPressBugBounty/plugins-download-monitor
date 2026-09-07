@@ -301,8 +301,6 @@ class DLM_Admin_Media_Insert {
 
 				jQuery( 'body' ).on( 'click', '.insert_download', function () {
 
-					var win = window.dialogArguments || opener || parent || top;
-
 					var download_id = jQuery( 'input[name="download_id"]:checked' ).val();
 					var template = '';
 					var tempSelect = jQuery('#template_name').val();
@@ -319,7 +317,9 @@ class DLM_Admin_Media_Insert {
 
 					shortcode = shortcode + ']';
 
-					win.send_to_editor( shortcode );
+					if ( window.parent && window.parent !== window ) {
+						window.parent.postMessage( { type: 'dlm_insert_download_shortcode', shortcode: shortcode }, '*' );
+					}
 
 					return false;
 				} );

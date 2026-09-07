@@ -8,6 +8,43 @@ jQuery( function ($) {
         return false;
     } );
 
+    window.addEventListener( 'message', function ( event ) {
+        var data = event.data;
+
+        if ( ! data || 'dlm_insert_download_shortcode' !== data.type || 'string' !== typeof data.shortcode ) {
+            return;
+        }
+
+        var editorId  = window.wpActiveEditor;
+        var inserted  = false;
+        var editor    = editorId && window.tinymce ? window.tinymce.get( editorId ) : null;
+
+        if ( editor && ! editor.isHidden() ) {
+            editor.execCommand( 'mceInsertContent', false, data.shortcode );
+            inserted = true;
+        } else if ( editorId ) {
+            var textarea = document.getElementById( editorId );
+
+            if ( textarea ) {
+                if ( 'number' === typeof textarea.selectionStart ) {
+                    var start = textarea.selectionStart, end = textarea.selectionEnd;
+                    textarea.value = textarea.value.slice( 0, start ) + data.shortcode + textarea.value.slice( end );
+                    textarea.selectionStart = textarea.selectionEnd = start + data.shortcode.length;
+                } else {
+                    textarea.value += data.shortcode;
+                }
+                textarea.focus();
+                inserted = true;
+            }
+        }
+
+        if ( inserted && 'function' === typeof window.tb_remove ) {
+            try {
+                window.tb_remove();
+            } catch ( e ) {}
+        }
+    } );
+
     // Browse for file
     jQuery( 'body' ).on( 'click', '.dlm-extension-filtering a', function (event) {
         event.preventDefault();
