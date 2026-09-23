@@ -1,3 +1,7 @@
+= 5.2.10 - 23.09.2026 =
+Fixed: Reports page could sometimes fail to load when switching to Detailed Reports.
+Added: Loading indicator when saving a quick-add download.
+
 = 5.2.9 - 07.09.2026 =
 Fixed: Minor translation issue.
 Fixed: Insert Download button not working in some editors.

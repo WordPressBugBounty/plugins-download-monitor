@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 7.1
-Stable tag: 5.2.9
+Stable tag: 5.2.10
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,10 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.2.10 - 23.09.2026 =
+Fixed: Reports page could sometimes fail to load when switching to Detailed Reports.
+Added: Loading indicator when saving a quick-add download.
+
 = 5.2.9 - 07.09.2026 =
 Fixed: Minor translation issue.
 Fixed: Insert Download button not working in some editors.

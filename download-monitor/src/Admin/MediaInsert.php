@@ -271,7 +271,8 @@ class DLM_Admin_Media_Insert {
 
 				<p>
 					<?php wp_nonce_field( 'quick-add', 'quick-add-nonce' ) ?>
-					<input type="submit" class="button button-primary button-large dlm-media-insert-button" value="<?php echo esc_attr__( 'Save Download', 'download-monitor' ); ?>"/>
+					<input type="submit" id="dlm-quick-add-save" class="button button-primary button-large dlm-media-insert-button" value="<?php echo esc_attr__( 'Save Download', 'download-monitor' ); ?>"/>
+					<img src="<?php echo esc_url( includes_url( '/images/spinner.gif' ) ); ?>" id="dlm-quick-add-spinner" style="display:none;width:20px;height:20px;vertical-align:middle;margin-left:6px;" />
 				</p>
 			</div>
 
@@ -328,6 +329,11 @@ class DLM_Admin_Media_Insert {
 					jQuery( '#plupload-upload-ui' ).slideUp();
 					jQuery( '#quick-add-details' ).slideDown();
 					return false;
+				} );
+
+				jQuery( '#quick-add' ).on( 'submit', function () {
+					jQuery( '#dlm-quick-add-save' ).prop( 'disabled', true );
+					jQuery( '#dlm-quick-add-spinner' ).show();
 				} );
 
 				<?php
