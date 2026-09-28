@@ -2045,8 +2045,6 @@ class DLM_Admin_List_Table extends WP_List_Table {
 			/**
 			 * Hook for DLM CPT table view tabs
 			 *
-			 * @hooked DLM_Admin_Extensions dlm_cpt_tabs()
-			 *
 			 * @moved  5.0.0 Moved here from CustomColumns.php
 			 */
 			$tabs = apply_filters( 'dlm_add_edit_tabs', $tabs );

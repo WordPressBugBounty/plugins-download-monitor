@@ -1,0 +1,25 @@
+.form {
+	position: relative;
+}
+
+.fieldWrapper {
+	position: relative;
+	margin-bottom: var(--theme-content-spacing);
+}
+
+.lockedGroup {
+	position: relative;
+}
+
+.disabledClass {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.group {
+	margin-bottom: var(--theme-content-spacing);
+
+	h4 {
+		font-size: 17px;
+	}
+}

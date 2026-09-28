@@ -373,17 +373,43 @@ html body .dlm-download-link.dlm-download-started {
   font-size: 12px;
   color: red;
 }
+@keyframes dlm-xhr-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dlm-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.dlm-download-started .dlm-original-content {
+  display: none;
+}
+.dlm-original-content,
 .dlm-xhr-loading-gif {
-  width: 20px;
-  height: 20px;
+  animation: dlm-xhr-fade-in 0.25s ease;
+}
+.dlm-xhr-loading-gif {
+  width: 22px;
+  height: 22px;
   align-self: center;
-  margin: 5px 0;
+  margin: 5px 4px 5px 0;
+  vertical-align: middle;
+}
+.dlm-xhr-spinner .dlm-spinner-arc {
+  transform-origin: 22px 22px;
+  animation: dlm-spinner-rotate 0.9s linear infinite;
 }
 .dlm-xhr-progress {
   min-width: 75px;
   width: auto;
   display: inline-block;
   position: relative;
+  vertical-align: middle;
 }
 .dlm-no-access-modal-window {
   /*  position: fixed;

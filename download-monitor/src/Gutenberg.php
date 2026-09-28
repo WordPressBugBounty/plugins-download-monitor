@@ -66,6 +66,7 @@ class DLM_Gutenberg {
 				                                      'dlm_gutenberg_download_preview' => '1',
 			                                      ), site_url( '/', 'admin' ) ),
 			'templates'         => json_encode( $templates ),
+			'buttonBlockDeprecated' => (bool) apply_filters( 'dlm_download_button_block_deprecated', false ),
 		) );
 	}
 

@@ -134,8 +134,8 @@ class DLM_Download_Error_Handler {
 	public function no_secure_file_path( $download ) {
 		// IF XHR, send error header.
 		if ( $this->download_handler->check_for_xhr() ) {
-			header( 'X-DLM-Error: filetype' );
-			$restriction_type = 'filetype';
+			header( 'X-DLM-Error: file_not_found' );
+			$restriction_type = 'file_not_found';
 			// Set no access modal.
 			$this->download_handler->set_no_access_modal( __( 'File has been deleted or moved.',
 			                                                  'download-monitor' ),

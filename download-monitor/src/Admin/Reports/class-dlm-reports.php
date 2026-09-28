@@ -22,7 +22,6 @@ if ( ! class_exists( 'DLM_Reports' ) ) {
 			add_filter( 'dlm_admin_menu_links', array( $this, 'add_admin_menu' ), 30 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'reports_scripts' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'reports_widget_scripts' ) );
-			add_filter( 'dlm_header_logo_text', array( $this, 'add_page_title' ) );
 
 			add_action( 'wp_dashboard_setup', array( $this, 'register_dashboard_widget' ) );
 		}
@@ -648,12 +647,5 @@ if ( ! class_exists( 'DLM_Reports' ) ) {
 			);
 		}
 
-		public function add_page_title( $title ) {
-			if ( ! isset( $_GET['page'] ) || 'download-monitor-reports' !== $_GET['page'] ) {
-				return $title;
-			}
-
-			return __( 'Download Monitor', 'download-monitor' );
-		}
 	}
 }

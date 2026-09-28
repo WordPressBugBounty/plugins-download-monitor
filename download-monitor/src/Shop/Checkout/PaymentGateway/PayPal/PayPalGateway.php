@@ -141,14 +141,16 @@ class PayPalGateway extends PaymentGateway\PaymentGateway {
 				'type'  => 'text',
 				'std'   => '',
 				'label' => __( 'Sandbox Client ID', 'download-monitor' ),
-				'desc'  => __( 'Your application sandbox client ID.', 'download-monitor' )
+				'desc'  => __( 'Your application sandbox client ID.', 'download-monitor' ),
+				'child' => true,
 			),
 			array(
 				'name'  => 'sandbox_client_secret',
 				'type'  => 'text',
 				'std'   => '',
 				'label' => __( 'Sandbox Client Secret', 'download-monitor' ),
-				'desc'  => __( 'Your application sandbox client secret.', 'download-monitor' )
+				'desc'  => __( 'Your application sandbox client secret.', 'download-monitor' ),
+				'child' => true,
 			),
 		) );
 	}

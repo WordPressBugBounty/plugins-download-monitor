@@ -319,7 +319,7 @@ class DLM_Admin_Media_Insert {
 					shortcode = shortcode + ']';
 
 					if ( window.parent && window.parent !== window ) {
-						window.parent.postMessage( { type: 'dlm_insert_download_shortcode', shortcode: shortcode }, '*' );
+						window.parent.postMessage( { type: 'dlm_insert_download_shortcode', shortcode: shortcode }, window.location.origin );
 					}
 
 					return false;

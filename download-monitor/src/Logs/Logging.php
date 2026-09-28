@@ -134,8 +134,6 @@ class DLM_Logging {
 	}
 
 	/**
-	 * Generate a single-use token for an XHR download attempt, tied to the given download/version.
-	 *
 	 * @param int $download_id
 	 * @param int $version_id
 	 *
@@ -157,8 +155,6 @@ class DLM_Logging {
 	}
 
 	/**
-	 * Validate and consume a single-use XHR log token.
-	 *
 	 * @param string $token
 	 * @param int    $download_id
 	 * @param int    $version_id
@@ -232,7 +228,62 @@ class DLM_Logging {
 		$download->set_version( $version );
 		// Truly log the corresponding status
 		$this->log( $download, $version, $status, $cookie, $current_url );
-		die();
+
+		if ( 'completed' !== $status ) {
+			die();
+		}
+
+		try {
+			$download = download_monitor()->service( 'download_repository' )->retrieve_single( $download_id );
+		} catch ( \Exception $e ) {
+			die();
+		}
+
+		$count    = $download->get_download_count();
+		$response = array( 'download_count' => $count );
+		$formats  = isset( $_POST['count_formats'] ) ? array_filter( array_map( 'sanitize_key', (array) $_POST['count_formats'] ) ) : array();
+
+		if ( $formats ) {
+			$response['counts'] = array();
+
+			foreach ( $formats as $format ) {
+				$response['counts'][ $format ] = $this->format_download_count_text( $format, $count );
+			}
+		}
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Translate a download count into the requested display format.
+	 *
+	 * @param string $format
+	 * @param int    $count
+	 *
+	 * @return string
+	 */
+	private function format_download_count_text( $format, $count ) {
+		switch ( $format ) {
+			case 'standard':
+				return sprintf( _n( '1 download', '%d downloads', $count, 'download-monitor' ), $count );
+
+			case 'times':
+				return sprintf( _n( 'Downloaded 1 time', 'Downloaded %d times', $count, 'download-monitor' ), $count );
+
+			case 'times-value':
+				return sprintf( _n( '1 time', '%d times', $count, 'download-monitor' ), $count );
+		}
+
+		/**
+		 * Filters the display text for a download count format that isn't
+		 * one of the built-in ones above. Defaults to the raw count.
+		 *
+		 * @hook dlm_xhr_download_count_format_text
+		 *
+		 * @param int    $count  The raw download count.
+		 * @param string $format The requested format key.
+		 */
+		return apply_filters( 'dlm_xhr_download_count_format_text', $count, $format );
 	}
 
 	/**

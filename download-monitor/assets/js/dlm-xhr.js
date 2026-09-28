@@ -5,6 +5,13 @@ jQuery( function( $ ) {
 	new DLM_XHR_Download();
 } );
 
+// Inherits the button's own text color via currentColor - only used while
+// dlmXHRgif still points at our own default spinner (see dlmXHRInlineSpinner).
+const DLM_XHR_SPINNER_SVG = '<svg class="dlm-xhr-loading-gif dlm-xhr-spinner" viewBox="0 0 44 44" width="22" height="22" aria-hidden="true">' +
+	'<circle cx="22" cy="22" r="18" fill="none" stroke="currentColor" stroke-width="6" opacity="0.25"></circle>' +
+	'<circle class="dlm-spinner-arc" cx="22" cy="22" r="18" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-dasharray="28 200"></circle>' +
+	'</svg>';
+
 class DLM_XHR_Download {
 	responsHeaders = {};
 
@@ -128,8 +135,27 @@ class DLM_XHR_Download {
 		button.removeAttribute( 'download' );
 		button.setAttribute( 'disabled', 'disabled' );
 		if ( dlmXHRProgress ) {
-			const loading_gif = '<img src="' + dlmXHRgif + '" class="dlm-xhr-loading-gif">';
-			button.innerHTML += loading_gif;
+			if ( ! button.querySelector( '.dlm-original-content' ) ) {
+				Array.from( button.childNodes ).forEach( ( node ) => {
+					if ( node.nodeType === Node.ELEMENT_NODE ) {
+						node.classList.add( 'dlm-original-content' );
+					} else if ( node.nodeType === Node.TEXT_NODE && '' !== node.textContent.trim() ) {
+						const wrapper = document.createElement( 'span' );
+						wrapper.className = 'dlm-original-content';
+						node.replaceWith( wrapper );
+						wrapper.appendChild( node );
+					}
+				} );
+			}
+			if ( dlmXHRInlineSpinner ) {
+				button.insertAdjacentHTML( 'beforeend', DLM_XHR_SPINNER_SVG );
+			} else {
+				const loadingGif = document.createElement( 'img' );
+				loadingGif.src = dlmXHRgif;
+				loadingGif.className = 'dlm-xhr-loading-gif';
+				button.appendChild( loadingGif );
+			}
+			buttonObj.append( '<span class="dlm-xhr-progress">&nbsp;0%</span>' );
 		}
 
 		// Trigger the `dlm_download_triggered` action
@@ -387,9 +413,10 @@ class DLM_XHR_Download {
 				button.removeAttribute( 'download' );
 				button.setAttribute( 'href', href );
 				buttonObj.find( '.dlm-xhr-loading-gif' ).remove();
+				buttonObj.find( 'span.dlm-xhr-progress' ).remove();
 				// There is no way to find out whether user finished downloading
 				setTimeout( function() {
-					buttonObj.removeClass().addClass( buttonClass ).find( 'span.dlm-xhr-progress' ).remove();
+					buttonObj.removeClass().addClass( buttonClass );
 				}, 4000 );
 			}
 		};
@@ -474,15 +501,66 @@ class DLM_XHR_Download {
 			params.append( `responseHeaders[${ key }]`, value );
 		}
 
-		try {
-			navigator.sendBeacon(
-				dlmXHR.ajaxUrl,
-				new Blob( [ params.toString() ], { type: 'application/x-www-form-urlencoded;charset=UTF-8' } ),
-			);
-		} catch ( e ) {
+		const countEls = [];
+
+		if ( 'completed' === status && ! dlmXHR.countExcluded ) {
+			document.querySelectorAll( `[id="download-link-${ download_id }"]` ).forEach( ( link ) => {
+				const nested = link.querySelector( '.dlm-download-count-value' );
+
+				if ( nested ) {
+					countEls.push( nested );
+					return;
+				}
+
+				const box = link.closest( '.dlm-download-box' );
+				const boxCount = box ? box.querySelector( '.dlm-download-count' ) : null;
+
+				if ( boxCount ) {
+					countEls.push( boxCount );
+				}
+			} );
+		}
+
+		if ( countEls.length ) {
+			const formats = new Set();
+			countEls.forEach( ( el ) => {
+				if ( el.dataset.countFormat ) {
+					formats.add( el.dataset.countFormat );
+				}
+			} );
+			formats.forEach( ( format ) => params.append( 'count_formats[]', format ) );
+
+			fetch( dlmXHR.ajaxUrl, { method: 'POST', body: params, keepalive: true } )
+				.then( ( response ) => response.json() )
+				.then( ( json ) => {
+					const data = json && json.data ? json.data : null;
+
+					if ( ! data ) {
+						return;
+					}
+
+					countEls.forEach( ( el ) => {
+						const format = el.dataset.countFormat;
+
+						if ( format && data.counts && 'undefined' !== typeof data.counts[ format ] ) {
+							el.textContent = data.counts[ format ];
+						} else if ( 'undefined' !== typeof data.download_count ) {
+							el.textContent = data.download_count;
+						}
+					} );
+				} )
+				.catch( () => {} );
+		} else {
 			try {
-				fetch( dlmXHR.ajaxUrl, { method: 'POST', body: params, keepalive: true } );
-			} catch ( _ ) {}
+				navigator.sendBeacon(
+					dlmXHR.ajaxUrl,
+					new Blob( [ params.toString() ], { type: 'application/x-www-form-urlencoded;charset=UTF-8' } ),
+				);
+			} catch ( e ) {
+				try {
+					fetch( dlmXHR.ajaxUrl, { method: 'POST', body: params, keepalive: true } );
+				} catch ( _ ) {}
+			}
 		}
 
 		if ( ! redirect_path ) {
@@ -664,8 +742,9 @@ class DLM_XHR_Download {
 				button.setAttribute( 'href', href );
 				// There is no way to find out whether user finished downloading
 				buttonObj.find( '.dlm-xhr-loading-gif' ).remove();
+				buttonObj.find( 'span.dlm-xhr-progress' ).remove();
 				setTimeout( function() {
-					buttonObj.removeClass().addClass( buttonClass ).find( 'span.dlm-xhr-progress' ).remove();
+					buttonObj.removeClass().addClass( buttonClass );
 				}, 1000 );
 			}
 		};

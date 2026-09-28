@@ -1,3 +1,10 @@
+= 5.3.0 - 28.09.2026 =
+Changed: Reworked the Settings page.
+Fixed: Various bugfixes and stability improvements.
+
+= 5.2.11 - 28.09.2026 =
+Fixed: Security update.
+
 = 5.2.10 - 23.09.2026 =
 Fixed: Reports page could sometimes fail to load when switching to Detailed Reports.
 Added: Loading indicator when saving a quick-add download.

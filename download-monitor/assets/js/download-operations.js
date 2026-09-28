@@ -9,9 +9,19 @@ jQuery( function ($) {
     } );
 
     window.addEventListener( 'message', function ( event ) {
+        // Only accept messages from our own origin (e.g. the media-upload.php thickbox iframe).
+        if ( event.origin !== window.location.origin ) {
+            return;
+        }
+
         var data = event.data;
 
         if ( ! data || 'dlm_insert_download_shortcode' !== data.type || 'string' !== typeof data.shortcode ) {
+            return;
+        }
+
+        // Only allow well-formed [download ...] shortcodes, no markup.
+        if ( ! /^\[download\s[^<>\]]*\]$/.test( data.shortcode ) ) {
             return;
         }
 
@@ -42,28 +52,6 @@ jQuery( function ($) {
             try {
                 window.tb_remove();
             } catch ( e ) {}
-        }
-    } );
-
-    // Browse for file
-    jQuery( 'body' ).on( 'click', '.dlm-extension-filtering a', function (event) {
-        event.preventDefault();
-
-        const target = jQuery(this).attr('id'),
-              paidExtensions = jQuery('.dlm_extensions .feature-list > .feature-block').not('.free-extension'),
-              freeExtensions = jQuery('.dlm_extensions .feature-list > .feature-block.free-extension'),
-            tabs = jQuery(this).parents('.dlm-extension-filtering').find('li').not(jQuery(this).parent());
-        jQuery(this).parent().addClass('active-section');
-        tabs.removeClass('active-section');
-        if ( 'free-extensions' === target ) {
-            freeExtensions.show( );
-            paidExtensions.hide( );
-        } else if ( 'pro-extensions' === target ){
-            freeExtensions.hide( );
-            paidExtensions.show( );
-        } else {
-            freeExtensions.show( );
-            paidExtensions.show( );
         }
     } );
 

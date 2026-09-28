@@ -128,44 +128,31 @@ class DLM_Admin_Writepanels {
 					$this->download_post = $GLOBALS['dlm_download'];
 				}
 			}
-
-			do_action( 'dlm_information_start', $this->download_post->get_id(), $this->download_post );
-			?>
-			<div>
-				<p>
-				<?php
-					echo esc_html__( 'URL', 'download-monitor' );
-				?>
-				</p>
-				<?php
-				echo '<input type="text" id="dlm-info-id" value="' . esc_attr( $this->download_post->get_the_download_link() ) . '" readonly onfocus="this.select()"/>';
-				?>
-				<a href="#" title="
-				<?php
-				esc_attr_e( 'Copy URL', 'download-monitor' );
-				?>
-				" class="copy-dlm-button button button-primary dashicons dashicons-format-gallery" data-item="Url" style="width:40px;"></a><span></span>
-			</div>
-			<div>
-				<p>
-				<?php
-					echo esc_html__( 'Shortcode', 'download-monitor' );
-				?>
-				</p>
-				<?php
-				echo '<input type="text" id="dlm-info-id" value=\'[download id="' . esc_attr( $this->download_post->get_id() ) . '"]\' readonly onfocus="this.select()"/>';
-				?>
-				<a href="#" title="
-				<?php
-				esc_attr_e( 'Copy shortcode', 'download-monitor' );
-				?>
-				" class="copy-dlm-button button button-primary dashicons dashicons-format-gallery" data-item="Shortcode" style="width:40px;"></a><span></span>
-			</div>
-			<?php
-			do_action( 'dlm_information_end', $this->download_post->get_id(), $this->download_post );
 		} catch ( Exception $e ) {
-			echo '<p>' . esc_html__( 'No download information for new downloads.', 'download-monitor' ) . '</p>';
+			$this->download_post = new DLM_Download();
+			$this->download_post->set_id( $post->ID );
+			$this->download_post->set_post( $post );
 		}
+
+		echo '<div id="dlm-download-information-app"></div>';
+
+		wp_add_inline_script(
+			'dlm_download_information',
+			'window.dlmDownloadInformation = ' . wp_json_encode(
+				array(
+					'downloadId' => $this->download_post->get_id(),
+					'url'        => $this->download_post->get_the_download_link(),
+					'shortcode'  => '[download id="' . $this->download_post->get_id() . '"]',
+					'strings'    => array(
+						'url'       => __( 'URL', 'download-monitor' ),
+						'shortcode' => __( 'Shortcode', 'download-monitor' ),
+						'copy'      => __( 'Copy', 'download-monitor' ),
+						'copied'    => __( 'Copied', 'download-monitor' ),
+					),
+				)
+			) . ';',
+			'before'
+		);
 
 		echo '</div>';
 	}
@@ -397,6 +384,9 @@ class DLM_Admin_Writepanels {
 					list( $file_path, $remote_file, $restriction ) = download_monitor()->service( 'file_manager' )->get_secure_path( $file_path );
 					// If remote file don't check for allowed path.
 					if ( $remote_file ) {
+						continue;
+					}
+					if ( ! $file_path ) {
 						continue;
 					}
 					$f_path = str_replace( DLM_Utils::basename( $file_path ), '', $file_path );

@@ -180,6 +180,9 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 				exit;
 			}
 
+			// Lets an extension resolve $wp->query_vars[$this->endpoint] / $wp->request itself (e.g. from a custom URL) before the check below runs.
+			do_action( 'dlm_download_handler_before_resolve', $wp, $this->endpoint );
+
 			// check if need to handle an actual download.
 			if ( ! empty( $wp->query_vars[ $this->endpoint ] )
 				&& ( ( null === $wp->request )
@@ -452,6 +455,23 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 
 			$is_redirect = $download->is_redirect_only() || apply_filters( 'dlm_do_not_force', false, $download, $version );
 
+			if ( ! $remote_file && ! $is_redirect && ! file_exists( $file_path ) ) {
+				if ( $this->check_for_xhr() ) {
+					header( 'X-DLM-Error: file_not_found' );
+					$this->set_no_access_modal( __( 'File not found.', 'download-monitor' ), $download, 'file_not_found' );
+					exit;
+				}
+
+				wp_die(
+					esc_html__( 'File not found.', 'download-monitor' )
+						. ' <a href="' . esc_url( home_url() ) . '">'
+						. esc_html__( 'Go to homepage &rarr;', 'download-monitor' )
+						. '</a>',
+					esc_html__( 'Download Error', 'download-monitor' ),
+					array( 'response' => 404 )
+				);
+			}
+
 			$file_path = apply_filters( 'dlm_file_path', $file_path, $remote_file, $download );
 			// Not a redirect, so we need to check the file type.
 			if ( ! $is_redirect ) {
@@ -573,11 +593,9 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			$referrer       = ( isset( $_SERVER['HTTP_REFERER'] ) ) ? esc_url_raw( $_SERVER['HTTP_REFERER'] ) : '';
 			$cookie_manager = DLM_Cookie_Manager::get_instance();
 
-			// Access has been granted at this point, so it's now safe to hand out a log token for this attempt.
 			if ( $this->check_for_xhr() ) {
 				header( 'X-DLM-Log-Token: ' . $this->dlm_logging->generate_xhr_log_token( $download->get_id(), $version->get_id() ) );
 			}
-
 			// check if user downloaded this version in the past minute. This checks if the cookie exists and if it's
 			// value is the same as the download id.
 			if ( false === $cookie_manager->check_cookie_meta( 'wp_dlm_downloading', $download->get_id() ) ) {

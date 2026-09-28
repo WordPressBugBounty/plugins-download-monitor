@@ -19,13 +19,10 @@ class DLM_Ajax_Handler {
 		add_action( 'wp_ajax_download_monitor_add_file', array( $this, 'add_file' ) );
 		add_action( 'wp_ajax_download_monitor_list_files', array( $this, 'list_files' ) );
 		add_action( 'wp_ajax_download_monitor_insert_panel_upload', array( $this, 'insert_panel_upload' ) );
-		add_action( 'wp_ajax_dlm_settings_lazy_select', array( $this, 'handle_settings_lazy_select' ) );
 		add_action( 'wp_ajax_dlm_dismiss_notice', array( $this, 'dismiss_notice' ) );
 		add_action( 'wp_ajax_dlm_update_file_meta', array( $this, 'save_attachment_meta' ) );
 		// Update the download_column from table download_log from varchar to longtext.
 		add_action( 'wp_ajax_dlm_update_download_category', array( $this, 'upgrade_download_category' ), 15 );
-		// Action to save the Enable Shop setting.
-		add_action( 'wp_ajax_dlm_enable_shop', array( $this, 'enable_shop' ) );
 		// AJAX action to retrieve the AAM upsell modal
 		add_action( 'wp_ajax_dlm_upsell_modal', array( $this, 'upsell_modal_ajax' ) );
 	}
@@ -306,32 +303,6 @@ class DLM_Ajax_Handler {
 	/**
 	 * Handle lazy select AJAX calls
 	 */
-	public function handle_settings_lazy_select() {
-		// check nonce
-		check_ajax_referer( 'dlm-settings-lazy-select-nonce', 'nonce' );
-		// Check if the user has rights.
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( __( 'You do not have permission to do this', 'download-monitor' ) );
-			exit;
-		}
-
-		if ( ! isset( $_POST['option'] ) ) {
-			wp_send_json_error();
-			exit;
-		}
-
-		// settings key
-		$option_key = sanitize_text_field( wp_unslash( $_POST['option'] ) );
-
-		// get options
-		$options = apply_filters( 'dlm_settings_lazy_select_' . $option_key, array() );
-
-		// send options
-		wp_send_json( $options );
-		exit;
-	}
-
-
 	/**
 	 * Save attachment meta dlm_download
 	 *
@@ -385,29 +356,6 @@ class DLM_Ajax_Handler {
 		} else {
 			wp_send_json_success( array( 'message' => __( 'Column download_category is already updated', 'download-monitor' ) ) );
 		}
-	}
-
-	/**
-	 * Enable Shop function.
-	 *
-	 * @return void
-	 *
-	 * @since 5.0.0
-	 */
-	public function enable_shop() {
-		check_ajax_referer( 'dlm_ajax_nonce', 'nonce' );
-		if ( empty( $_POST['value'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'No data submitted', 'download-monitor' ) ) );
-		}
-		// Check if the user has rights.
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'You do not have permission to do this', 'download-monitor' ) ) );
-		}
-
-		$enable_shop = 'true' === sanitize_text_field( wp_unslash( $_POST['value'] ) ) ? '1' : '0';
-
-		update_option( 'dlm_shop_enabled', $enable_shop );
-		wp_send_json_success();
 	}
 
 	/**
