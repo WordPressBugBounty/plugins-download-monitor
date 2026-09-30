@@ -1,3 +1,6 @@
+= 5.3.1 - 30.09.2026 =
+Fixed: Google Drive Grant/Revoke access buttons not working from the Settings page.
+
 = 5.3.0 - 28.09.2026 =
 Changed: Reworked the Settings page.
 Fixed: Various bugfixes and stability improvements.

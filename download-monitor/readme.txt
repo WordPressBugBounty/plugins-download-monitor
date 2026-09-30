@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 7.1
-Stable tag: 5.3.0
+Stable tag: 5.3.1
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,9 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.3.1 - 30.09.2026 =
+Fixed: Google Drive Grant/Revoke access buttons not working from the Settings page.
+
 = 5.3.0 - 28.09.2026 =
 Changed: Reworked the Settings page.
 Fixed: Various bugfixes and stability improvements.

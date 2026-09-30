@@ -699,10 +699,17 @@ class DLM_Settings_Rest {
 			}
 
 			if ( 'drive_auth_button' === $field['type'] ) {
-				$field['connected']  = false !== get_option( 'dlm_access_token', false );
+				$drive_token         = get_option( 'dlm_access_token', false );
+				$field['connected']  = false !== $drive_token && ! empty( $drive_token['refresh_token'] );
 				$base                = admin_url( 'edit.php?post_type=dlm_download&page=download-monitor-settings&tab=external_hosting' );
-				$field['grant_url']  = wp_nonce_url( add_query_arg( 'action', 'oauth_grant', $base ), 'oauth_grant' );
-				$field['revoke_url'] = wp_nonce_url( add_query_arg( 'action', 'oauth_revoke', $base ), 'oauth_revoke' );
+				$field['grant_url']  = esc_url_raw( add_query_arg( array(
+					'action'   => 'oauth_grant',
+					'_wpnonce' => wp_create_nonce( 'oauth_grant' ),
+				), $base ) );
+				$field['revoke_url'] = esc_url_raw( add_query_arg( array(
+					'action'   => 'oauth_revoke',
+					'_wpnonce' => wp_create_nonce( 'oauth_revoke' ),
+				), $base ) );
 			}
 
 			if ( 'blacklist_status' === $field['type'] ) {
