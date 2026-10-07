@@ -13,6 +13,19 @@ if ( ! class_exists( 'DLM_Admin_Extensions' ) ) {
 		 */
 		private static $instance;
 
+		/**
+		 * Populated externally (e.g. DLM_Product_Manager::get()->get_products()) by callers
+		 * that still expect this legacy property.
+		 *
+		 * @var array
+		 */
+		public $installed_extensions = array();
+
+		/**
+		 * @var array
+		 */
+		private $licensed_extensions = array();
+
 		public static function get_instance() {
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof DLM_Admin_Extensions ) ) {
 				self::$instance = new DLM_Admin_Extensions();
@@ -25,6 +38,38 @@ if ( ! class_exists( 'DLM_Admin_Extensions' ) ) {
 			if ( is_admin() ) {
 				add_action( 'admin_notices', array( $this, 'outdated_pro_notice' ) );
 			}
+			$this->set_licensed_extensions();
+		}
+
+		/**
+		 * Scans the legacy '{product_id}-license' options for an active status.
+		 *
+		 * @return void
+		 */
+		private function set_licensed_extensions() {
+			global $wpdb;
+
+			if ( ! DLM_Admin_Helper::is_dlm_admin_page() ) {
+				return;
+			}
+
+			$extensions = $wpdb->get_results( $wpdb->prepare( "SELECT `option_name`, `option_value` FROM {$wpdb->prefix}options WHERE `option_name` LIKE %s AND `option_name` LIKE %s;", $wpdb->esc_like( 'dlm-' ) . '%', '%' . $wpdb->esc_like( '-license' ) ), ARRAY_A );
+
+			foreach ( $extensions as $extension ) {
+				$extension_name = str_replace( '-license', '', $extension['option_name'] );
+				$value          = maybe_unserialize( $extension['option_value'] );
+
+				if ( isset( $value['status'] ) && 'active' === $value['status'] ) {
+					$this->licensed_extensions[] = $extension_name;
+				}
+			}
+		}
+
+		/**
+		 * @return array
+		 */
+		public function get_licensed_extensions() {
+			return $this->licensed_extensions;
 		}
 
 		public function outdated_pro_notice() {

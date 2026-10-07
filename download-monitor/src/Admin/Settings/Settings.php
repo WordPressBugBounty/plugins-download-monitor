@@ -506,31 +506,44 @@ class DLM_Admin_Settings {
 						'type'     => 'checkbox',
 					),
 					array(
-						'name'     => 'dlm_el_optin',
-						'std'      => '',
-						'label'    => __( 'Opt-in field', 'download-monitor' ),
-						'cb_label' => __( 'Add checkbox', 'download-monitor' ),
-						'desc'     => __( 'Enter your opt-in text. If you enter any text here, a checkbox will be added to your Email Lock forms that your users are required to check. If this field is left empty, no opt-in checkbox will be added.', 'download-monitor' ),
-						'type'     => 'editor',
+						'name'    => 'dlm_el_optin_group',
+						'label'   => __( 'Opt-in field', 'download-monitor' ),
+						'type'    => 'group',
+						'options' => array(
+							array(
+								'name'     => 'dlm_el_optin',
+								'std'      => '',
+								'label'    => '',
+								'cb_label' => __( 'Add checkbox', 'download-monitor' ),
+								'desc'     => __( 'Enter your opt-in text. If you enter any text here, a checkbox will be added to your Email Lock forms that your users are required to check. If this field is left empty, no opt-in checkbox will be added.', 'download-monitor' ),
+								'type'     => 'editor',
+							),
+						),
 					),
 					array(
-						'name'  => '',
-						'type'  => 'title',
-						'title' => __( 'Email settings', 'download-monitor' ),
-					),
-					array(
-						'name'  => 'dlm_el_optin_email_from_name',
-						'std'   => '',
-						'label' => __( '"From" name', 'download-monitor' ),
-						'desc'  => sprintf( __( 'From whom should the email say it\'s from. If left empty %s will be used.', 'download-monitor' ), '<strong><i>' . esc_html( get_bloginfo( 'name' ) ) . '</i></strong>' ),
-						'type'  => 'text',
-					),
-					array(
-						'name'  => 'dlm_el_optin_email_from_address',
-						'std'   => '',
-						'label' => __( '"From" address', 'download-monitor' ),
-						'desc'  => sprintf( __( 'From what address should the email say it\'s from. If left empty %s will be used.', 'download-monitor' ), '<strong><i>' . esc_html( get_bloginfo( 'admin_email' ) ) . '</i></strong>' ),
-						'type'  => 'text',
+						'name'    => 'dlm_el_email_settings_group',
+						'label'   => __( 'Email settings', 'download-monitor' ),
+						'type'    => 'group',
+						'options' => array(
+							array(
+								'name'  => 'dlm_el_optin_email_from_name',
+								'std'   => '',
+								'label' => __( '"From" name', 'download-monitor' ),
+								'desc'  => sprintf( __( 'From whom should the email say it\'s from. If left empty %s will be used.', 'download-monitor' ), '<strong><i>' . esc_html( get_bloginfo( 'name' ) ) . '</i></strong>' ),
+								'type'  => 'text',
+								'width' => 'half',
+								'row'   => 'el_from',
+							),
+							array(
+								'name'  => 'dlm_el_optin_email_from_address',
+								'std'   => '',
+								'label' => __( '"From" address', 'download-monitor' ),
+								'desc'  => sprintf( __( 'From what address should the email say it\'s from. If left empty %s will be used.', 'download-monitor' ), '<strong><i>' . esc_html( get_bloginfo( 'admin_email' ) ) . '</i></strong>' ),
+								'type'  => 'text',
+								'width' => 'half',
+								'row'   => 'el_from',
+							),
+						),
 					),
 					array(
 						'name'    => 'double_optin_accordion_confirmation',
@@ -548,6 +561,7 @@ class DLM_Admin_Settings {
 								'desc'    => __( 'The page where the user should land when clicking on the confirmation page. Default is our own dynamic template.', 'download-monitor' ),
 								'type'    => 'lazy_select',
 								'options' => array(),
+								'width'   => 'half',
 							),
 							array(
 								'name'  => 'dlm_el_optin_double_text',
@@ -562,6 +576,8 @@ class DLM_Admin_Settings {
 								'label' => __( 'Page title', 'download-monitor' ),
 								'desc'  => __( 'The page\'s title where the user should land when clicking on the confirmation page.', 'download-monitor' ),
 								'type'  => 'text',
+								'width' => 'half',
+								'row'   => 'el_confirmation_title_subject',
 							),
 							array(
 								'name'  => 'dlm_el_optin_confirmation_subject',
@@ -569,6 +585,8 @@ class DLM_Admin_Settings {
 								'label' => __( 'Email subject', 'download-monitor' ),
 								'desc'  => __( 'The confirmation email subject the user receives. Placeholders like <code>%%download_title%%</code>, <code>%%download_ID%%</code>, <code>%%download_version%%</code>, <code>%%site_url%%</code>, <code>%%site_title%%</code>, <code>%%date%%</code>, <code>%%client_name%%</code> can be used.', 'download-monitor' ),
 								'type'  => 'text',
+								'width' => 'half',
+								'row'   => 'el_confirmation_title_subject',
 							),
 							array(
 								'name'  => 'dlm_el_optin_confirmation_content',
@@ -595,6 +613,7 @@ class DLM_Admin_Settings {
 								'desc'    => __( 'The page where the user should land after clicking the Unlock Download. Default is our own dynamic template.', 'download-monitor' ),
 								'type'    => 'lazy_select',
 								'options' => array(),
+								'width'   => 'half',
 							),
 							array(
 								'name'  => 'dlm_el_optin_text',
@@ -609,6 +628,8 @@ class DLM_Admin_Settings {
 								'label' => __( 'Page title', 'download-monitor' ),
 								'desc'  => __( 'The page\'s title where the user should land after clicking the Unlock Download.', 'download-monitor' ),
 								'type'  => 'text',
+								'width' => 'half',
+								'row'   => 'el_file_delivery_title_subject',
 							),
 							array(
 								'name'  => 'dlm_el_optin_email_subject',
@@ -616,6 +637,8 @@ class DLM_Admin_Settings {
 								'label' => __( 'Email subject', 'download-monitor' ),
 								'desc'  => __( 'The email subject the user should receive when the download unlock happens. Placeholders like <code>%%download_title%%</code>, <code>%%download_ID%%</code>, <code>%%download_version%%</code>, <code>%%site_url%%</code>, <code>%%site_title%%</code>, <code>%%date%%</code>, <code>%%client_name%%</code> can be used.', 'download-monitor' ),
 								'type'  => 'text',
+								'width' => 'half',
+								'row'   => 'el_file_delivery_title_subject',
 							),
 							array(
 								'name'  => 'dlm_el_optin_email_content',
@@ -642,6 +665,11 @@ class DLM_Admin_Settings {
 								'desc'    => __( 'The page where the user should land after clicking the link in the email. It should contain the download link.', 'download-monitor' ),
 								'type'    => 'lazy_select',
 								'options' => array(),
+								'width'   => 'half',
+								'child'   => array(
+									'field' => 'dlm_el_email_link',
+									'value' => 'landing_page',
+								),
 							),
 						),
 					),
@@ -660,6 +688,7 @@ class DLM_Admin_Settings {
 							'per_form' => __( 'only form locked downloads', 'download-monitor' ),
 							'global'   => __( 'all locked downloads', 'download-monitor' ),
 						),
+						'width'   => 'half',
 					),
 				),
 			),
@@ -677,6 +706,7 @@ class DLM_Admin_Settings {
 							'per_form'     => __( 'all downloads with the same form', 'download-monitor' ),
 							'global'       => __( 'all locked downloads', 'download-monitor' ),
 						),
+						'width'   => 'half',
 					),
 				),
 			),
@@ -694,6 +724,7 @@ class DLM_Admin_Settings {
 							'per_form'     => __( 'all downloads with the same form', 'download-monitor' ),
 							'global'       => __( 'all locked downloads', 'download-monitor' ),
 						),
+						'width'   => 'half',
 					),
 				),
 			),
@@ -711,6 +742,7 @@ class DLM_Admin_Settings {
 							'per_form'     => __( 'all downloads with the same form', 'download-monitor' ),
 							'global'       => __( 'all locked downloads', 'download-monitor' ),
 						),
+						'width'   => 'half',
 					),
 				),
 			),
@@ -774,6 +806,8 @@ class DLM_Admin_Settings {
 						'type'  => 'text',
 						'label' => __( 'AWS Access Key ID', 'download-monitor' ),
 						'desc'  => sprintf( __( 'Your public AWS Access Key ID. To find this, go to your <a href="%s" target="_blank">Security Credentials page</a>.', 'download-monitor' ), 'https://console.aws.amazon.com/iam/home?#security_credential' ),
+						'width' => 'half',
+						'row'   => 's3_access',
 					),
 					array(
 						'name'  => 'dlm_amazon_s3_secret_access_key',
@@ -781,6 +815,8 @@ class DLM_Admin_Settings {
 						'type'  => 'password',
 						'label' => __( 'AWS Secret Access Key', 'download-monitor' ),
 						'desc'  => sprintf( __( 'Your secret AWS Access Key. To find this, go to your <a href="%s" target="_blank">Security Credentials page</a>.', 'download-monitor' ), 'https://console.aws.amazon.com/iam/home?#security_credential' ),
+						'width' => 'half',
+						'row'   => 's3_access',
 					),
 					array(
 						'name'  => 'dlm_amazon_s3_bucket',
@@ -788,6 +824,8 @@ class DLM_Admin_Settings {
 						'type'  => 'text',
 						'label' => __( 'AWS S3 Bucket Name', 'download-monitor' ),
 						'desc'  => sprintf( __( 'Your AWS S3 bucket name. To find this, go to your <a href="%s" target="_blank">Buckets page</a>.', 'download-monitor' ), 'https://s3.console.aws.amazon.com/s3' ),
+						'width' => 'half',
+						'row'   => 's3_bucket_region',
 					),
 					array(
 						'name'    => 'dlm_amazon_s3_region',
@@ -795,6 +833,8 @@ class DLM_Admin_Settings {
 						'type'    => 'select',
 						'label'   => __( 'S3 Region', 'download-monitor' ),
 						'desc'    => __( 'Your S3 bucket region. If a region is not selected the Amazon S3 file browser will not work but the direct url functionality will be available.', 'download-monitor' ),
+						'width'   => 'half',
+						'row'     => 's3_bucket_region',
 						'options' => array(
 							''               => __( 'Detect automatically', 'download-monitor' ),
 							'us-east-1'      => 'US East (N. Virginia) - us-east-1',
@@ -832,13 +872,17 @@ class DLM_Admin_Settings {
 						'type'  => 'text',
 						'label' => __( 'Client id', 'download-monitor' ),
 						'desc'  => __( 'Insert the google client id you get from Google Cloud Console.', 'download-monitor' ),
+						'width' => 'half',
+						'row'   => 'gd_client',
 					),
 					array(
 						'name'  => 'dlm_google_drive_client_secret',
 						'std'   => '',
-						'type'  => 'text',
+						'type'  => 'password',
 						'label' => __( 'Client Secret Key', 'download-monitor' ),
 						'desc'  => __( 'Insert the google client secret key you get from Google Cloud Console.', 'download-monitor' ),
+						'width' => 'half',
+						'row'   => 'gd_client',
 					),
 					array(
 						'name'  => 'dlm_authorized_javascript',
@@ -847,6 +891,8 @@ class DLM_Admin_Settings {
 						'label' => __( 'Authorized JavaScript origins', 'download-monitor' ),
 						'desc'  => __( 'Copy and insert this in Google Cloud Console\'s Authorized JavaScript origins field.', 'download-monitor' ),
 						'value' => home_url(),
+						'width' => 'half',
+						'row'   => 'gd_uris',
 					),
 					array(
 						'name'  => 'dlm_redirect_uri',
@@ -855,6 +901,8 @@ class DLM_Admin_Settings {
 						'label' => __( 'Authorized redirect URIs', 'download-monitor' ),
 						'desc'  => __( 'Copy and insert this in Google Cloud Console\'s Authorized redirect URIs field.', 'download-monitor' ),
 						'value' => esc_url_raw( admin_url( 'edit.php?post_type=dlm_download&page=download-monitor-settings&tab=external_hosting&action=oauth_redirect' ) ),
+						'width' => 'half',
+						'row'   => 'gd_uris',
 					),
 				),
 			),
@@ -881,6 +929,8 @@ class DLM_Admin_Settings {
 						'label' => __( 'Turnstile Site Key', 'download-monitor' ),
 						'desc'  => sprintf( __( 'The Turnstile Site Key can be found in your Cloudflare dashboard. %s for more information on how to set this up.', 'download-monitor' ), '<a href="' . $doc_link . '" target="_blank">' . __( 'Please read our documentation', 'download-monitor' ) . '</a>' ),
 						'type'  => 'text',
+						'width' => 'half',
+						'row'   => 'turnstile_keys',
 					),
 					array(
 						'name'  => 'dlm_turnstile_sitesecret',
@@ -888,6 +938,8 @@ class DLM_Admin_Settings {
 						'label' => __( 'Turnstile Secret Key', 'download-monitor' ),
 						'desc'  => sprintf( __( 'The Turnstile Secret Key can be found in your Cloudflare dashboard. %s for more information on how to set this up.', 'download-monitor' ), '<a href="' . $doc_link . '" target="_blank">' . __( 'Please read our documentation', 'download-monitor' ) . '</a>' ),
 						'type'  => 'text',
+						'width' => 'half',
+						'row'   => 'turnstile_keys',
 					),
 					array(
 						'name'        => 'dlm_turnstile_unlock_text',
@@ -908,6 +960,7 @@ class DLM_Admin_Settings {
 						'label'   => __( 'reCAPTCHA type', 'download-monitor' ),
 						'desc'    => __( 'Select the version of the reCAPTCHA you are willing to use.', 'download-monitor' ),
 						'type'    => 'select',
+						'width'   => 'half',
 						'options' => array(
 							'v2' => __( 'reCAPTCHA v2', 'download-monitor' ),
 							'v3' => __( 'reCAPTCHA v3', 'download-monitor' ),
@@ -919,6 +972,8 @@ class DLM_Admin_Settings {
 						'label' => __( 'reCAPTCHA Site Key', 'download-monitor' ),
 						'desc'  => sprintf( __( 'The Google reCAPTCHA Site Key can be found in your Google reCAPTCHA dashboard. %s for more information on how to set this up.', 'download-monitor' ), '<a href="' . $doc_link . '" target="_blank">' . __( 'Please read our documentation', 'download-monitor' ) . '</a>' ),
 						'type'  => 'text',
+						'width' => 'half',
+						'row'   => 'recaptcha_keys',
 					),
 					array(
 						'name'  => 'dlm_ca_sitesecret',
@@ -926,6 +981,8 @@ class DLM_Admin_Settings {
 						'label' => __( 'reCAPTCHA Secret Key', 'download-monitor' ),
 						'desc'  => sprintf( __( 'The Google reCAPTCHA Secret Key can be found in your Google reCAPTCHA dashboard. %s for more information on how to set this up.', 'download-monitor' ), '<a href="' . $doc_link . '" target="_blank">' . __( 'Please read our documentation', 'download-monitor' ) . '</a>' ),
 						'type'  => 'text',
+						'width' => 'half',
+						'row'   => 'recaptcha_keys',
 					),
 					array(
 						'name'        => 'dlm_ca_unlock_text',
@@ -988,6 +1045,7 @@ class DLM_Admin_Settings {
 						'label'       => __( 'Email Addresses', 'download-monitor' ),
 						'placeholder' => $admin_email,
 						'desc'        => __( 'Define which email addresses will receive download notifications and reports. Separate multiple addresses by comma(,).', 'download-monitor' ),
+						'width'       => 'half',
 					),
 					array(
 						'name'  => '',
@@ -1001,6 +1059,7 @@ class DLM_Admin_Settings {
 						'label'   => __( 'Send notifications for', 'download-monitor' ),
 						'desc'    => __( 'You can send notifications for every or just selected downloads files. When "Selected Downloads" is selected, turn on notifications per download in the download edit screen.', 'download-monitor' ),
 						'type'    => 'select',
+						'width'   => 'half',
 						'options' => array(
 							'never'    => __( 'Never', 'download-monitor' ),
 							'all'      => __( 'All Downloads', 'download-monitor' ),
@@ -1014,6 +1073,7 @@ class DLM_Admin_Settings {
 						'label'       => __( 'Email Fields', 'download-monitor' ),
 						'placeholder' => $admin_email,
 						'desc'        => $fields_description,
+						'width'       => 'half',
 					),
 					array(
 						'name'  => '',
@@ -1027,6 +1087,7 @@ class DLM_Admin_Settings {
 						'label'   => __( 'Report period', 'download-monitor' ),
 						'desc'    => __( 'You can send email notification on each download or a periodical downloads report.', 'download-monitor' ),
 						'type'    => 'select',
+						'width'   => 'half',
 						'options' => array(
 							'never'   => __( 'Never', 'download-monitor' ),
 							'daily'   => __( 'Daily', 'download-monitor' ),
@@ -1414,7 +1475,7 @@ class DLM_Admin_Settings {
 
 			if ( $is_nginx ) {
 				$upload_path = str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', $upload_dir['basedir'] );
-				$nginx_rules = "<code class='dlm-code-nginx-rules'>location " . $upload_path . '/dlm_uploads {<br />deny all;<br />return 403;<br />}</code>';
+				$nginx_rules = "<code class='dlm-code-nginx-rules'>location ^~ " . $upload_path . '/dlm_uploads {<br />internal;<br />}</code>';
 
 				$nginx_text = sprintf( __( 'Please add the following rules to your nginx config to disable direct file access: %s', 'download-monitor' ), wp_kses_post( $nginx_rules ) );
 
@@ -1453,8 +1514,7 @@ class DLM_Admin_Settings {
 		$transient = get_transient( 'dlm_robots_txt' );
 
 		if ( ! $transient ) {
-			$robots_file = "{$_SERVER['DOCUMENT_ROOT']}/robots.txt";
-			$response    = wp_remote_get( get_home_url() . '/robots.txt' );
+			$robots_file = sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) . '/robots.txt';
 
 			$transient = array(
 				'icon'       => 'dashicons-dismiss',
@@ -1462,23 +1522,25 @@ class DLM_Admin_Settings {
 				'text'       => __( 'Robots.txt is missing.', 'download-monitor' ),
 			);
 
-			if ( is_wp_error( $response ) || '404' === wp_remote_retrieve_response_code( $response ) ) {
-				$transient['virtual'] = 'maybe';
-				$transient['text']    = __( 'Robots.txt file is missing but site may have virtual robots.txt file. If you regenerate this you will loose the restrictions set in the virtual one. Please either update the virtual with the corresponding rules for dlm_uploads or regenerate and update the newly created one with the contents from the virtual file.', 'download-monitor' );
+			if ( file_exists( $robots_file ) ) {
+				if ( stristr( (string) file_get_contents( $robots_file ), 'dlm_uploads' ) ) {
+					$transient['protected']  = true;
+					$transient['icon']       = 'dashicons-yes-alt';
+					$transient['icon_color'] = '#00A32A';
+					$transient['text']       = __( 'You are protected by robots.txt.', 'download-monitor' );
+				} else {
+					$transient['protected'] = false;
+					$transient['text']      = __( 'Robots.txt file exists but dlm_uploads folder is not protected.', 'download-monitor' );
+				}
 			} else {
-				if ( ! file_exists( $robots_file ) ) {
+				$response = wp_remote_get( get_home_url() . '/robots.txt' );
+
+				if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+					$transient['virtual'] = 'maybe';
+					$transient['text']    = __( 'Robots.txt file is missing but site may have virtual robots.txt file. If you regenerate this you will loose the restrictions set in the virtual one. Please either update the virtual with the corresponding rules for dlm_uploads or regenerate and update the newly created one with the contents from the virtual file.', 'download-monitor' );
+				} else {
 					$transient['virtual'] = 'maybe';
 					$transient['text']    = __( 'Robots.txt file is missing but site has virtual robots.txt file. If you regenerate this you will loose the restrictions set in the virtual one. Please either update the virtual with the corresponding rules for dlm_uploads or regenerate and update the newly created one with the contents from the virtual file.', 'download-monitor' );
-				} else {
-					if ( stristr( wp_remote_retrieve_body( $response ), 'dlm_uploads' ) ) {
-						$transient['protected']  = true;
-						$transient['icon']       = 'dashicons-yes-alt';
-						$transient['icon_color'] = '#00A32A';
-						$transient['text']       = __( 'You are protected by robots.txt.', 'download-monitor' );
-					} else {
-						$transient['protected'] = false;
-						$transient['text']      = __( 'Robots.txt file exists but dlm_uploads folder is not protected.', 'download-monitor' );
-					}
 				}
 			}
 

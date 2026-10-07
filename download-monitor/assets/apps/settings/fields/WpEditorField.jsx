@@ -33,6 +33,7 @@ export default function WpEditorField( { field, value, onChange, disabled } ) {
 				wpautop: false,
 				plugins: 'lists,link,paste,wordpress,wplink',
 				toolbar1: 'bold,italic,bullist,numlist,blockquote,link,unlink,undo,redo',
+				content_style: 'body { font-family: -apple-system, system-ui, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; font-size: 16px; }',
 				setup( editor ) {
 					editor.on( 'change keyup setcontent', () => {
 						onChangeRef.current( editor.getContent() );

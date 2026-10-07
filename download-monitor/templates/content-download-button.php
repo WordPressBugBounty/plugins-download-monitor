@@ -52,7 +52,7 @@ DLM_Utils::generate_attributes( $attributes['link_attributes'] ) // phpcs:ignore
 		&ndash; <span
 			class="dlm-download-count-value"
 			data-count-format="times"><?php
-			printf( esc_html( _n( 'Downloaded 1 time', 'Downloaded %d times', $dlm_download->get_download_count(), 'download-monitor' ) ), absint( $dlm_download->get_download_count() ) ) ?></span>
+			printf( esc_html( _n( 'Downloaded %d time', 'Downloaded %d times', $dlm_download->get_download_count(), 'download-monitor' ) ), absint( $dlm_download->get_download_count() ) ) ?></span>
 		&ndash; <?php
 		echo esc_html( $dlm_download->get_version()->get_filesize_formatted() ); ?></span>
 </a>

@@ -36,7 +36,7 @@ if ( ! empty( $dlm_attributes['className'] ) ) {
 
 	<div
 		class="dlm-download-count"><?php
-		printf( esc_attr( _n( '1 download', '%d downloads', $dlm_download->get_download_count(), 'download-monitor' ) ), esc_html( $dlm_download->get_download_count() ) ) ?></div>
+		printf( esc_attr( _n( '%d download', '%d downloads', $dlm_download->get_download_count(), 'download-monitor' ) ), esc_html( $dlm_download->get_download_count() ) ) ?></div>
 
 	<div
 		class="dlm-download-box-content">

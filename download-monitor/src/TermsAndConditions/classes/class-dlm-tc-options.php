@@ -39,7 +39,8 @@ class DLM_TC_Options {
 				'label'   => __( 'Terms and Conditions page', 'download-monitor' ),
 				'desc'    => __( "Choose what page the users are redirected to when they click <code>%%terms_conditions%%</code> in the acceptance message.", 'download-monitor' ),
 				'type'    => 'lazy_select',
-				'options' => array()
+				'options' => array(),
+				'width'   => 'half'
 			),
 			array(
 				'title' => __( 'Global setting', 'download-monitor' ),

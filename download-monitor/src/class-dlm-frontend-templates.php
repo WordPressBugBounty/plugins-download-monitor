@@ -85,7 +85,7 @@ class DLM_Frontend_Templates {
 			case 'title':
 				break;
 			case 'version-list':
-				$attributes['link_attributes']['title'] = sprintf( esc_attr( _n( 'Downloaded 1 time', 'Downloaded %d times', $download->get_download_count(), 'download-monitor' ) ), esc_html( $download->get_download_count() ) );
+				$attributes['link_attributes']['title'] = sprintf( esc_attr( _n( 'Downloaded %d time', 'Downloaded %d times', $download->get_download_count(), 'download-monitor' ) ), esc_html( $download->get_download_count() ) );
 				break;
 			default:
 				$attributes['link_attributes']['class'][] = 'dlm-download-default';

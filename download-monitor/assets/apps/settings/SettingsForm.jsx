@@ -8,6 +8,7 @@ import htmlHelp from './fields/htmlHelp';
 import styles from './SettingsForm.module.scss';
 
 const DISPLAY_ONLY = [ 'title', 'desc' ];
+const NARROW_TYPES = [ 'text', 'password', 'select', 'lazy_select' ];
 
 const isChecked = ( value ) => '1' === value || true === value;
 
@@ -17,6 +18,100 @@ function renderDisplayOnly( field, index ) {
 	}
 
 	return field.text ? <p key={ index }>{ htmlHelp( field.text ) }</p> : null;
+}
+
+function getWidthClass( field ) {
+	if ( 'half' === field.width ) {
+		return styles.halfField;
+	}
+
+	if ( NARROW_TYPES.includes( field.type ) ) {
+		return styles.narrowField;
+	}
+
+	return '';
+}
+
+function isChildFieldVisible( fieldsByName, getValue, field, parentCheckboxValue ) {
+	if ( ! field.child ) {
+		return true;
+	}
+
+	if ( true === field.child ) {
+		return isChecked( parentCheckboxValue );
+	}
+
+	const controllingField = fieldsByName[ field.child.field ];
+	const controllingValue = controllingField ? getValue( controllingField ) : undefined;
+	const expected = field.child.value;
+
+	return Array.isArray( expected ) ? expected.includes( controllingValue ) : expected === controllingValue;
+}
+
+function renderFieldList( fields, getValue, onFieldChange ) {
+	const rendered = [];
+	const seenRows = new Set();
+	let parentCheckboxValue = null;
+
+	const fieldsByName = {};
+	fields.forEach( ( f ) => {
+		if ( f.name ) {
+			fieldsByName[ f.name ] = f;
+		}
+	} );
+
+	fields.forEach( ( field, index ) => {
+		if ( ! isChildFieldVisible( fieldsByName, getValue, field, parentCheckboxValue ) ) {
+			return;
+		}
+
+		if ( 'checkbox' === field.type && ! field.child ) {
+			parentCheckboxValue = getValue( field );
+		}
+
+		if ( DISPLAY_ONLY.includes( field.type ) ) {
+			rendered.push( renderDisplayOnly( field, index ) );
+
+			return;
+		}
+
+		if ( field.row ) {
+			if ( seenRows.has( field.row ) ) {
+				return;
+			}
+			seenRows.add( field.row );
+
+			const rowFields = fields.filter( ( f ) => f.row === field.row );
+
+			rendered.push(
+				<div key={ `row-${ field.row }` } className={ styles.fieldRow }>
+					{ rowFields.map( ( rowField, rowIndex ) => (
+						<div key={ rowField.name || rowIndex } className={ styles.fieldWrapper }>
+							<FieldRenderer
+								field={ rowField }
+								value={ getValue( rowField ) }
+								onChange={ ( value ) => onFieldChange( rowField, value ) }
+							/>
+						</div>
+					) ) }
+				</div>
+			);
+
+			return;
+		}
+
+		rendered.push(
+			<div key={ field.name || index } className={ `${ styles.fieldWrapper } ${ getWidthClass( field ) }`.trim() }>
+				<FieldRenderer
+					field={ field }
+					value={ getValue( field ) }
+					onChange={ ( value ) => onFieldChange( field, value ) }
+				/>
+			</div>
+		);
+	} );
+
+	return rendered;
 }
 
 export default function SettingsForm( { section } ) {
@@ -91,21 +186,16 @@ export default function SettingsForm( { section } ) {
 				<Card key={ field.name || index } className={ styles.group }>
 					<CardBody>
 						<h4>{ field.label }</h4>
-						{ ( field.options || [] ).map( ( subField, subIndex ) => (
-							<GroupField
-								key={ subField.name || subIndex }
-								field={ subField }
-								value={ getValue( subField ) }
-								onChange={ ( value ) => handleChange( subField, value ) }
-							/>
-						) ) }
+						{ renderFieldList( field.options || [], getValue, handleChange ) }
 					</CardBody>
 				</Card>
 			);
 		}
 
+		const wrapperClass = `${ styles.fieldWrapper } ${ getWidthClass( field ) }`.trim();
+
 		return (
-			<div key={ field.name || index } className={ styles.fieldWrapper }>
+			<div key={ field.name || index } className={ wrapperClass }>
 				<FieldRenderer
 					field={ field }
 					value={ getValue( field ) }
@@ -114,6 +204,45 @@ export default function SettingsForm( { section } ) {
 				/>
 			</div>
 		);
+	};
+
+	const renderItems = ( items, disabled ) => {
+		const rendered = [];
+		const seenRows = new Set();
+
+		items.forEach( ( { field, index } ) => {
+			const isRowable = field.row && ! DISPLAY_ONLY.includes( field.type ) && 'gateway_overview' !== field.type && 'group' !== field.type;
+
+			if ( ! isRowable ) {
+				rendered.push( renderField( field, index, disabled ) );
+
+				return;
+			}
+
+			if ( seenRows.has( field.row ) ) {
+				return;
+			}
+			seenRows.add( field.row );
+
+			const rowItems = items.filter( ( it ) => it.field.row === field.row );
+
+			rendered.push(
+				<div key={ `row-${ field.row }` } className={ styles.fieldRow }>
+					{ rowItems.map( ( { field: rowField, index: rowIndex } ) => (
+						<div key={ rowField.name || rowIndex } className={ styles.fieldWrapper }>
+							<FieldRenderer
+								field={ rowField }
+								value={ getValue( rowField ) }
+								onChange={ ( value ) => handleChange( rowField, value ) }
+								disabled={ disabled }
+							/>
+						</div>
+					) ) }
+				</div>
+			);
+		} );
+
+		return rendered;
 	};
 
 	// Group consecutive plain fields locked for the exact same reason so the
@@ -139,7 +268,7 @@ export default function SettingsForm( { section } ) {
 
 		const last = groups[ groups.length - 1 ];
 
-		if ( lockKey && last && last.lockKey === lockKey ) {
+		if ( last && last.lockKey === lockKey ) {
 			last.items.push( { field, index } );
 
 			return;
@@ -154,28 +283,16 @@ export default function SettingsForm( { section } ) {
 
 			{ groups.map( ( group, groupIndex ) => {
 				if ( ! group.lockKey ) {
-					return group.items.map( ( { field, index } ) => renderField( field, index, false ) );
+					return renderItems( group.items, false );
 				}
 
 				return (
 					<div key={ `locked-group-${ groupIndex }` } className={ styles.lockedGroup }>
-						{ group.items.map( ( { field, index } ) => renderField( field, index, true ) ) }
+						{ renderItems( group.items, true ) }
 						{ ! section.locked && <LockedForm badge={ group.badge } reason={ group.reason } extensionName={ group.extensionName } /> }
 					</div>
 				);
 			} ) }
-		</div>
-	);
-}
-
-function GroupField( { field, value, onChange } ) {
-	if ( DISPLAY_ONLY.includes( field.type ) ) {
-		return renderDisplayOnly( field, field.name );
-	}
-
-	return (
-		<div className={ styles.fieldWrapper }>
-			<FieldRenderer field={ field } value={ value } onChange={ onChange } />
 		</div>
 	);
 }

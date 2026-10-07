@@ -265,13 +265,13 @@ class DLM_Logging {
 	private function format_download_count_text( $format, $count ) {
 		switch ( $format ) {
 			case 'standard':
-				return sprintf( _n( '1 download', '%d downloads', $count, 'download-monitor' ), $count );
+				return sprintf( _n( '%d download', '%d downloads', $count, 'download-monitor' ), $count );
 
 			case 'times':
-				return sprintf( _n( 'Downloaded 1 time', 'Downloaded %d times', $count, 'download-monitor' ), $count );
+				return sprintf( _n( 'Downloaded %d time', 'Downloaded %d times', $count, 'download-monitor' ), $count );
 
 			case 'times-value':
-				return sprintf( _n( '1 time', '%d times', $count, 'download-monitor' ), $count );
+				return sprintf( _n( '%d time', '%d times', $count, 'download-monitor' ), $count );
 		}
 
 		/**

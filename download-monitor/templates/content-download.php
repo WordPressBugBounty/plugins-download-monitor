@@ -47,7 +47,7 @@ DLM_Utils::generate_attributes( $attributes['link_attributes'] ) // phpcs:ignore
 	<?php
 	$dlm_download->the_title(); ?>
 	(<span class="dlm-download-count-value"><?php
-		printf( esc_html( _n( '1 download', '%d downloads', $dlm_download->get_download_count(), 'download-monitor' ) ), esc_html( $dlm_download->get_download_count() ) ); ?></span>
+		printf( esc_html( _n( '%d download', '%d downloads', $dlm_download->get_download_count(), 'download-monitor' ) ), esc_html( $dlm_download->get_download_count() ) ); ?></span>
 	)
 </a>
 </div>

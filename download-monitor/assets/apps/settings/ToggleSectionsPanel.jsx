@@ -47,11 +47,13 @@ export default function ToggleSectionsPanel( { sections } ) {
 		<div className={ styles.content }>
 			<Panel className={ styles.panel }>
 				<PanelBody initialOpen>
-					<ToggleGroupControl value={ section.slug } onChange={ handleSelect } isBlock>
-						{ sections.map( ( item ) => (
-							<ToggleGroupControlOption key={ item.slug } value={ item.slug } label={ item.label } />
-						) ) }
-					</ToggleGroupControl>
+					<div className={ styles.sectionsNav }>
+						<ToggleGroupControl value={ section.slug } onChange={ handleSelect } isBlock={ false }>
+							{ sections.map( ( item ) => (
+								<ToggleGroupControlOption key={ item.slug } value={ item.slug } label={ item.label } />
+							) ) }
+						</ToggleGroupControl>
+					</div>
 				</PanelBody>
 			</Panel>
 
