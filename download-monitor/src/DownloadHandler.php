@@ -473,6 +473,9 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			}
 
 			$file_path = apply_filters( 'dlm_file_path', $file_path, $remote_file, $download );
+			if ( $remote_file ) {
+				$file_path = DLM_Utils::encode_url( $file_path );
+			}
 			// Not a redirect, so we need to check the file type.
 			if ( ! $is_redirect ) {
 				// Defined restricted file types.
@@ -966,7 +969,7 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 			$headers = array();
 			// We use this method to encode the filename so that file names with characters like
 			// chinese or persian can be named correctly after the download in Safari.
-			$file_name_safe = sanitize_file_name( $file_name );
+			$file_name_safe = str_replace( '"', '', sanitize_text_field( $file_name ) );
 			$file_name      = rawurlencode( $file_name_safe );
 			if ( $this->check_for_xhr() ) {
 				$headers['Content-Disposition'] = "attachment; filename=\"{$file_name}\";";

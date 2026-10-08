@@ -268,12 +268,12 @@ class DLM_XHR_Download {
 
 			if ( dlmFilenameHeader ) {
 				file_name = dlmFilenameHeader.replace( /\"/g, '' ).replace( ';', '' );
-				file_name = decodeURI( file_name );
+				file_name = decodeURIComponent( file_name );
 			} else if ( check_headers && 'undefined' !== typeof instance.responseHeaders[ 'content-disposition' ] ) {
 				file_name = instance.responseHeaders[ 'content-disposition' ].split( /(?:filename\*=UTF-8'')|(?:filename=)/ )[ 1 ];
 				file_name = file_name.replace( /\"/g, '' ).replace( ';', '' );
 				// We use this method because we urlencoded it on the server so that characters like chinese or persian are not broken
-				file_name = decodeURI( file_name );
+				file_name = decodeURIComponent( file_name );
 			}
 
 			// Error translations

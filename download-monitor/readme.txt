@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 7.1
-Stable tag: 5.3.2
+Stable tag: 5.3.3
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,10 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.3.3 - 08.10.2026 =
+Fixed: Remote files with spaces or special characters in the URL failing to download and logging PHP warnings.
+Fixed: Spaces and special characters being removed from file names when downloading.
+
 = 5.3.2 - 07.10.2026 =
 Improved: Settings page layout, with better field sizing and mobile display.
 Fixed: Anonymized IP logging not storing IPv6 addresses.
