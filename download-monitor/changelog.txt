@@ -1,3 +1,7 @@
+= 5.3.4 - 09.10.2026 =
+Fixed: Downloads using relative file paths not being updated when the file is protected or unprotected from the Media Library.
+Fixed: Security update.
+
 = 5.3.3 - 08.10.2026 =
 Fixed: Remote files with spaces or special characters in the URL failing to download and logging PHP warnings.
 Fixed: Spaces and special characters being removed from file names when downloading.

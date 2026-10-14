@@ -73,7 +73,7 @@ class DLM_XHR_Download {
 			}
 
 			jQuery( document ).trigger( 'dlm-xhr-download-button-click', [ url, this, dlmXHRGlobalLinks ] );
-			if ( 'undefined' !== typeof url && url.indexOf( dlmXHRGlobalLinks ) >= 0 ) {
+			if ( 'undefined' !== typeof url && dlmXHRinstance.isDownloadLink( url ) ) {
 				const redirect_link = jQuery( this ).data( 'redirect' ),
 					  target = jQuery( this ).attr( 'target' );
 				// Check if the link has a target attribute, and if it does, we need to open it in a new window.
@@ -84,6 +84,27 @@ class DLM_XHR_Download {
 				dlmXHRinstance.handleDownloadClick( this, e );
 			}
 		} );
+	}
+
+	// Same host + endpoint path (or query var when permalinks are off), not a substring match.
+	isDownloadLink( url ) {
+		try {
+			const link = new URL( url, document.baseURI );
+			const endpoint = new URL( dlmXHRGlobalLinks );
+
+			if ( ! [ 'http:', 'https:' ].includes( link.protocol ) || link.host !== endpoint.host ) {
+				return false;
+			}
+
+			if ( endpoint.search ) {
+				const queryVar = endpoint.searchParams.keys().next().value;
+				return link.pathname === endpoint.pathname && link.searchParams.has( queryVar );
+			}
+
+			return link.pathname.startsWith( endpoint.pathname );
+		} catch ( e ) {
+			return false;
+		}
 	}
 
 	handleDownloadClick( obj, e ) {
@@ -374,18 +395,13 @@ class DLM_XHR_Download {
 
 			if ( status == 404 && readyState == 2 ) {
 				const p = document.createElement( 'p' );
-				p.innerHTML = statusText;
+				p.textContent = statusText;
 				button.parentNode.appendChild( p );
-			}
-
-			if ( status == 401 && readyState == 2 ) {
-				window.location.href = statusText;
-				return;
 			}
 
 			if ( status == 403 && readyState == 2 ) {
 				const p = document.createElement( 'p' );
-				p.innerHTML = statusText;
+				p.textContent = statusText;
 				button.parentNode.appendChild( p );
 			}
 
