@@ -239,7 +239,7 @@ class DLM_Downloads_Path {
 	 * @return bool
 	 * @since 5.0.10
 	 */
-	private function check_access() {
+	public function check_access() {
 		// Load the load.php file to get the is_multisite() function.
 		require_once ABSPATH . 'wp-includes/load.php';
 		// Check if it's a multisite installation.

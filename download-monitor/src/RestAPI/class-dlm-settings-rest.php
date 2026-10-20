@@ -182,12 +182,12 @@ class DLM_Settings_Rest {
 				array(
 					'methods'             => 'GET',
 					'callback'            => array( $this, 'get_download_paths' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
+					'permission_callback' => array( $this, 'download_paths_permissions_check' ),
 				),
 				array(
 					'methods'             => 'POST',
 					'callback'            => array( $this, 'save_download_path' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
+					'permission_callback' => array( $this, 'download_paths_permissions_check' ),
 				),
 			)
 		);
@@ -198,7 +198,7 @@ class DLM_Settings_Rest {
 			array(
 				'methods'             => 'DELETE',
 				'callback'            => array( $this, 'delete_download_path' ),
-				'permission_callback' => array( $this, 'permissions_check' ),
+				'permission_callback' => array( $this, 'download_paths_permissions_check' ),
 			)
 		);
 
@@ -635,6 +635,10 @@ class DLM_Settings_Rest {
 
 	public function permissions_check() {
 		return current_user_can( 'manage_options' );
+	}
+
+	public function download_paths_permissions_check() {
+		return DLM_Downloads_Path::get_instance()->check_access();
 	}
 
 	/**
