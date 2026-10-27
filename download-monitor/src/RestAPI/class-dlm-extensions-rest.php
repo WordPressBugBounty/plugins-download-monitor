@@ -68,7 +68,7 @@ class DLM_Extensions_Rest {
 	 */
 	public function license_action( \WP_REST_Request $request ) {
 		$body        = $request->get_json_params();
-		$license_key = isset( $body['license_key'] ) ? $body['license_key'] : '';
+		$license_key = isset( $body['license_key'] ) ? trim( sanitize_text_field( $body['license_key'] ) ) : '';
 		$action      = isset( $body['action'] ) ? $body['action'] : '';
 		$saved       = get_option( 'dlm_pro_license_key', '' );
 

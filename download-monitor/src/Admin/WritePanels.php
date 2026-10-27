@@ -25,6 +25,7 @@ class DLM_Admin_Writepanels {
 	 */
 	public function __construct() {
 		add_action( 'add_meta_boxes_dlm_download', array( $this, 'add_meta_boxes' ), 15 );
+		add_filter( 'default_hidden_meta_boxes', array( $this, 'default_hidden_meta_boxes' ), 10, 2 );
 		add_action( 'save_post', array( $this, 'save_post' ), 100, 2 );
 		add_action( 'dlm_save_meta_boxes', array( $this, 'save_meta_boxes' ), 100, 2 );
 		add_action( 'wp_ajax_dlm_upload_file', array( $this, 'upload_file' ) );
@@ -105,6 +106,23 @@ class DLM_Admin_Writepanels {
 		}
 
 		remove_meta_box( 'postexcerpt', 'dlm_download', 'normal' );
+	}
+
+	/**
+	 * Hide the Custom Fields metabox by default. Users can enable it from Screen Options.
+	 *
+	 * @param array     $hidden The default hidden metaboxes.
+	 * @param WP_Screen $screen The current screen.
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function default_hidden_meta_boxes( $hidden, $screen ) {
+		if ( 'dlm_download' === $screen->id && ! in_array( 'postcustom', $hidden, true ) ) {
+			$hidden[] = 'postcustom';
+		}
+
+		return $hidden;
 	}
 
 	/**

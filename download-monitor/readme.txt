@@ -3,7 +3,7 @@ Contributors: wpchill, silkalns, barrykooij, mikejolley
 Tags: download manager, file manager, digital store, ecommerce, password protection  
 Requires at least: 5.5  
 Tested up to: 7.1
-Stable tag: 5.3.5
+Stable tag: 5.3.6
 License: GPLv3  
 Requires PHP: 7.4
 
@@ -114,6 +114,10 @@ Admin hits are not counted, log out and try again!
 4. The quick add panel can be opened via a link about the post editor. This lets you quickly add a file and insert it into a post.
 
 == Changelog ==
+= 5.3.6 - 27.10.2026 =
+Improved: The Custom Fields box is now hidden by default when editing a download or a product and can be enabled from Screen Options.
+Fixed: Duplicating a download no longer breaks meta saved by other plugins and now also copies version meta.
+
 = 5.3.5 - 20.10.2026 =
 Fixed: Security update. Thanks to Karthik Ramakrishnan.
 

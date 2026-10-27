@@ -822,30 +822,25 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 				list( $range )             = explode( ',', $range, 2 );
 				list( $range, $range_end ) = explode( '-', $range );
 				$range                     = intval( $range );
-				$range_end_modified        = false;
 
-				if ( ! $range_end || $range_end > $version->get_filesize() ) {
-					$range_end          = $version->get_filesize() - 1;
-					$range_end_modified = true;
+				if ( '' === trim( (string) $range_end ) || intval( $range_end ) >= $version->get_filesize() ) {
+					$range_end = $version->get_filesize() - 1;
 				} else {
 					$range_end = intval( $range_end );
 				}
 
-				if ( $range_end_modified ) {
-					$new_length = ( $range_end - $range ) + 1;
-				} else {
-					$new_length = $range_end - $range;
-				}
+				$new_length = ( $range_end - $range ) + 1;
 
 				header( $_SERVER['SERVER_PROTOCOL'] . ' 206 Partial Content' );
 				header( "Content-Length: $new_length" );
 				header( "Content-Range: bytes {$range}-{$range_end}/{$version->get_filesize()}" );
 			} else {
-				$range = false;
+				$range      = false;
+				$new_length = false;
 			}
 
 			// Adding contents to an object will trigger error on big files.
-			if ( ! $this->readfile_chunked( $file_path, false, $range ) ) {
+			if ( ! $this->readfile_chunked( $file_path, false, $range, $new_length ) ) {
 				if ( $remote_file ) {
 					// Redirect - we can't track if this completes or not.
 					if ( $this->check_for_xhr() ) {
@@ -1075,13 +1070,15 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 		 * @param  string   $file
 		 * @param  boolean  $retbytes  return bytes of file
 		 * @param  boolean  $range     if  HTTP RANGE to seek
+		 * @param  boolean  $length    max bytes to output, false for whole file
 		 *
 		 * @return   mixed
 		 */
 		public function readfile_chunked(
 			$file,
 			$retbytes = true,
-			$range = false
+			$range = false,
+			$length = false
 		) {
 			$chunksize = 1 * ( 1024 * 1024 );
 			$buffer    = '';
@@ -1096,8 +1093,16 @@ if ( ! class_exists( 'DLM_Download_Handler' ) ) {
 				fseek( $handle, $range );
 			}
 
-			while ( ! feof( $handle ) ) {
-				$buffer = fread( $handle, $chunksize );
+			while ( ! feof( $handle ) && ( false === $length || $length > 0 ) ) {
+				$buffer = fread( $handle, false === $length ? $chunksize : min( $chunksize, $length ) );
+
+				if ( false === $buffer ) {
+					break;
+				}
+
+				if ( false !== $length ) {
+					$length -= strlen( $buffer );
+				}
 				// phpcs:ignore
 				echo $buffer;
 

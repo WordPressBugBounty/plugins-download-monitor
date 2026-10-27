@@ -1,3 +1,7 @@
+= 5.3.6 - 27.10.2026 =
+Improved: The Custom Fields box is now hidden by default when editing a download or a product and can be enabled from Screen Options.
+Fixed: Duplicating a download no longer breaks meta saved by other plugins and now also copies version meta.
+
 = 5.3.5 - 20.10.2026 =
 Fixed: Security update. Thanks to Karthik Ramakrishnan.
 
