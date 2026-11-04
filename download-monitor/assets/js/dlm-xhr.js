@@ -291,8 +291,9 @@ class DLM_XHR_Download {
 				file_name = dlmFilenameHeader.replace( /\"/g, '' ).replace( ';', '' );
 				file_name = decodeURIComponent( file_name );
 			} else if ( check_headers && 'undefined' !== typeof instance.responseHeaders[ 'content-disposition' ] ) {
-				file_name = instance.responseHeaders[ 'content-disposition' ].split( /(?:filename\*=UTF-8'')|(?:filename=)/ )[ 1 ];
-				file_name = file_name.replace( /\"/g, '' ).replace( ';', '' );
+				const contentDisposition = instance.responseHeaders[ 'content-disposition' ];
+				const fileNameMatch = contentDisposition.match( /filename\*=UTF-8''([^;]+)/i ) || contentDisposition.match( /filename=([^;]+)/i );
+				file_name = fileNameMatch ? fileNameMatch[ 1 ].replace( /"/g, '' ).trim() : file_name;
 				// We use this method because we urlencoded it on the server so that characters like chinese or persian are not broken
 				file_name = decodeURIComponent( file_name );
 			}
